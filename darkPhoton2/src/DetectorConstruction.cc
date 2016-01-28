@@ -558,6 +558,8 @@ G4LogicalVolume * pipeVoidLV =
 		 fCheckOverlaps);
 
  //Modified vacuum chamber
+ // Currently being modified such that a much more dynamic and parameterized model 
+ // can be implemented and changed in batch mode for optimization studies
  //First unit
  new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0., targetPos+(frontSpace+targetLength+magnetLength)/2), 

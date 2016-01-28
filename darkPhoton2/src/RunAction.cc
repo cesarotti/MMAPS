@@ -35,6 +35,12 @@ RunAction::RunAction()
   
   analysisMan->CreateNtuple("Signal", "SignalTest");
   analysisMan->CreateNtupleIColumn("PlaceHolder");
+
+
+  //This is the output of the actual calorimeter. The latest study I've been doing
+  //doesn't require this information, and we can save a lot of memory by not 
+  //writing it.
+
   /*
       for (G4int j = 0; j<1225; j++)
 	{
@@ -54,6 +60,8 @@ RunAction::RunAction()
   */
       analysisMan->FinishNtuple(); 
 
+      //Omni detector in front of calorimeter
+
       analysisMan->CreateNtuple("Check", "Check");
  
       analysisMan->CreateNtupleDColumn("Energy");
@@ -70,6 +78,8 @@ RunAction::RunAction()
       analysisMan->CreateNtupleDColumn("ParentEnergy");
       //analysisMan->CreateNtupleIColumn("TrackID");
       analysisMan->FinishNtuple();
+
+      //Output from MadGraph
 
       analysisMan->CreateNtuple("True", "True");
       analysisMan->CreateNtupleDColumn("Energy");
@@ -99,7 +109,7 @@ void RunAction::BeginOfRunAction(const G4Run*)
   
   // Data storage and analysis
   G4AnalysisManager* analysisMan = G4AnalysisManager::Instance();
- 
+  //Name of root file
    analysisMan->OpenFile("Signal");
 
 }
