@@ -76,6 +76,7 @@ fLogicCalor(NULL), //logical volume for calorimeter
     fBeamLineMaterial(NULL),
     fScintillatorMaterial(NULL),
     fMagnetMaterial(NULL),
+    fTargetLength(NULL), 
     CLEObool(false)
    
 {
@@ -228,7 +229,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   //Updated for new vacuum chamber 
   //CJC 11/15/15
 
-  G4double targetLength = .5*2.54*cm; // target is 1/2 inch
+  fTargetLength = .5*2.54*cm; // target is 1/2 inch
   G4double targetFace = 10.0*cm; //lengths of sides of face of target
 
   G4double crystalLength = 2.54*12.0*cm; // 1 ft long xtals
@@ -971,6 +972,29 @@ G4Material* pttoMaterial =
 void DetectorConstruction::SetMaxStep(G4double maxStep)
 {
   if ((fStepLimit)&&(maxStep>0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+}
+
+void DetectorConstruction::SetCalorDist(G4double distance)
+{
+  fCalorDist = distance; 
+  
+  for (int i=0; i<1225; i++)
+    {
+      if (!fPhysCalor[i])
+	{
+	  G4cerr << "Detector has not yet been constructed." << G4endl;
+	  return;
+	}
+    }
+
+  for (int i=0; i<1225; i++)
+    {
+      G4ThreeVector temp =fPhysCalor[i]->GetTranslation();
+      fPhysCalor[i]->SetTranslation(temp->getX(), temp->getY(), .5*fCalorDist+.5*fTargetLength);
+    }
+
+  G4RunManager::GetRunManager()->GeometryHasBeenModified();
+
 }
 
 void DetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)

@@ -24,13 +24,6 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* Det)
   fDetDirectory = new G4UIdirectory("/darkPhotons/det/");
   fDetDirectory->SetGuidance("Detector construction control");
 
-  /*
-   fTargMatCmd = new G4UIcmdWithAString("/darkPhotons/det/setTargetMaterial",this);
-  fTargMatCmd->SetGuidance("Select material of the target,");
-  fTargMatCmd->SetParameterName("choice",false);
-  fTargMatCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
-  */
-
   fCalMatCmd = new G4UIcmdWithAString("/darkPhotons/det/setCalorMaterial",this);
   fCalMatCmd->SetGuidance("Select Material of the Calorimeter");
   fCalMatCmd->SetParameterName("choice",false);
@@ -42,6 +35,12 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* Det)
   fStepMaxCmd->SetUnitCategory("Length");
   fStepMaxCmd->AvailableForStates(G4State_Idle);
 
+  fCalPosCmd = new G4UIcmdWithADoubleAndUnit("/darkPhotons/det/setCalorPos", this); 
+  fCalPosCmd->SetGuidance("Define position of calorimeter"); 
+  fCalPosCmd->SetParameterName("calorPos", false); 
+  fCalPosCmd->SetUnitCategory("Length");
+  fCalPosCmd->AvailableForStates(G4State_Idle); 
+
 }
 
 
@@ -50,6 +49,7 @@ DetectorMessenger::~DetectorMessenger()
   //delete fTargMatCmd;
   delete fCalMatCmd;
   delete fStepMaxCmd;
+  delete fCalPosCmd; 
   delete fDirectory;
   delete fDetDirectory;
 }
@@ -68,4 +68,8 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     fDetectorConstruction
       ->SetMaxStep(fStepMaxCmd->GetNewDoubleValue(newValue));
   }   
+
+  if( command == fCalPosCmd ) {
+    fDetectorConstruction
+      ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
 }

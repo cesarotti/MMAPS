@@ -43,6 +43,7 @@ public:
   void SetTargetMaterial (G4String );
   void SetCalorMaterial (G4String );
   void SetMaxStep(G4double );
+  void SetCalorDist(G4double );
   void SetChamberMaterial (G4String ); //Changes material of vacuum chamber from detector messenger
   void SetCheckOverlaps(G4bool );
 
@@ -61,7 +62,9 @@ private:
   G4LogicalVolume** fLogicCalor; //pointer to calorimeter
   G4LogicalVolume* fLogicTarget; //pointer to logical target
   
+  //for setCalorPos command
   G4VPhysicalVolume** fPhysCalor; //pointer to calorimeter physical volumes
+  G4double fCalorDist; //distance from middle of target to center of crystal
   
 
   G4Material* fTargetMaterial; // pointer to target material
@@ -76,6 +79,8 @@ private:
   G4Material* fBeamLineMaterial; //duh
   G4Material* fScintillatorMaterial;
   G4Material* fMagnetMaterial; 
+
+  G4double fTargetLength;
 
   G4UserLimits* fStepLimit; // pointer to user step limits
 
