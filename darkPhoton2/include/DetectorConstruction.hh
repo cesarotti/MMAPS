@@ -60,6 +60,9 @@ private:
 
   G4LogicalVolume** fLogicCalor; //pointer to calorimeter
   G4LogicalVolume* fLogicTarget; //pointer to logical target
+  
+  G4VPhysicalVolume** fPhysCalor; //pointer to calorimeter physical volumes
+  
 
   G4Material* fTargetMaterial; // pointer to target material
   G4Material* fCalorMaterial; // pointer to calorimeter material

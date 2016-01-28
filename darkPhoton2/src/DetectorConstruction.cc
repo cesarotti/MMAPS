@@ -384,7 +384,7 @@ G4VSolid* boxS =
 	 (i>1020 && i<1044) || (i>1056 && i<1078) || (i>1092 && i<1112) ||
 	 (i>1129 && i<1145) || (i>1166 && i<1178))
        {
-	 new G4PVPlacement(0, 
+	 fCalor[i]=new G4PVPlacement(0, 
 			   position, 
 			   fLogicCalor[i], 
 			   "ClusterPV", 
