@@ -71,5 +71,6 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 
   if( command == fCalPosCmd ) {
     fDetectorConstruction
-      ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
+           ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
+  }
 }

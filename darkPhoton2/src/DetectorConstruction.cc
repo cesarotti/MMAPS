@@ -14,6 +14,7 @@
 #include "TestSD.hh"
 #include "OmniSD.hh"
 #include "G4SDManager.hh"
+#include "G4RunManager.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -61,27 +62,30 @@ static const G4double ft = 12*inch;
 
 DetectorConstruction::DetectorConstruction()
   : G4VUserDetectorConstruction(),
-fLogicCalor(NULL), //logical volume for calorimeter
+    fLogicCalor(NULL), //logical volume for calorimeter
+    fPhysCalor(NULL), //physical placement of all crystals
+    fCalorDist(0.), //distance to target
     fLogicTarget(NULL),
-  fTargetMaterial(NULL), //material of target
-  fCalorMaterial(NULL), //material of calorimeter
+    fTargetMaterial(NULL), //material of target
+    fCalorMaterial(NULL), //material of calorimeter
     fWallMaterial(NULL),
     fBeamDumpMaterial(NULL),
     fCLEOMaterial(NULL),
     fWorldMaterial(NULL),
-  fStepLimit(NULL), 
+    fStepLimit(NULL), 
     fCheckOverlaps(false), 
     fLiningMaterial(NULL), 
     fVacuumMaterial(NULL),
     fBeamLineMaterial(NULL),
     fScintillatorMaterial(NULL),
     fMagnetMaterial(NULL),
-    fTargetLength(NULL), 
+    fTargetLength(0.), 
     CLEObool(false)
    
 {
  fMessenger = new DetectorMessenger(this);
  fLogicCalor = new G4LogicalVolume*[1225];
+ fPhysCalor = new G4VPhysicalVolume*[1225];
  CLEObool = true;
 }
 
@@ -238,7 +242,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double targetPos = -(.5*calorSpacing); //position of Z coordinate of target
   G4double magnetLength= .98*m;
   G4double magnetFace = .1*m;
-  G4double calorDist = .5*calorSpacing + .5*targetLength;
+  G4double calorDist = .5*calorSpacing + .5*fTargetLength;
   G4double spacing = 1.*cm;
   G4double frontSpace = .56*m;
   G4double chamberLength = (calorSpacing-3*spacing-frontSpace-magnetLength)/3;
@@ -257,7 +261,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double wallH = 8.*ft;
 
   //beamline
-  G4double blL = (worldLength/2-targetPos-15*cm-targetLength/2)/2;
+  G4double blL = (worldLength/2-targetPos-15*cm-fTargetLength/2)/2;
 
   //beamdump
   G4double beamdumpL = 8.*ft;
@@ -321,7 +325,7 @@ G4VPhysicalVolume* worldPV
  G4ThreeVector positionTarget = G4ThreeVector(0, 0, targetPos); 
 
 G4Box* targetS = 
-  new G4Box("target", targetFace/2, targetFace/2, targetLength/2);
+  new G4Box("target", targetFace/2, targetFace/2, fTargetLength/2);
 
  fLogicTarget = 
    new G4LogicalVolume(targetS, fTargetMaterial, "Target", 0,0,0);
@@ -339,7 +343,7 @@ G4Box* targetS =
  
  
 
- G4cout << "Target is " << targetLength/cm << " cm of " <<
+ G4cout << "Target is " << fTargetLength/cm << " cm of " <<
    fTargetMaterial->GetName() << G4endl;
 
 
@@ -385,7 +389,7 @@ G4VSolid* boxS =
 	 (i>1020 && i<1044) || (i>1056 && i<1078) || (i>1092 && i<1112) ||
 	 (i>1129 && i<1145) || (i>1166 && i<1178))
        {
-	 fCalor[i]=new G4PVPlacement(0, 
+	 fPhysCalor[i]=new G4PVPlacement(0, 
 			   position, 
 			   fLogicCalor[i], 
 			   "ClusterPV", 
@@ -563,7 +567,7 @@ G4LogicalVolume * pipeVoidLV =
  // can be implemented and changed in batch mode for optimization studies
  //First unit
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., targetPos+(frontSpace+targetLength+magnetLength)/2), 
+		   G4ThreeVector(0., 0., targetPos+(frontSpace+fTargetLength+magnetLength)/2), 
 		   beamPipe0LV, 
 		   "beampipe0", 
 		   worldLV, 
@@ -572,7 +576,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
  //Second Unit
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., targetPos+frontSpace+targetLength/2+magnetLength+chamberLength/2),
+		   G4ThreeVector(0., 0., targetPos+frontSpace+fTargetLength/2+magnetLength+chamberLength/2),
 		   beamPipe1LV, 
 		   "beampipe1", 
 		   worldLV, 
@@ -581,7 +585,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., targetPos+frontSpace+targetLength/2+magnetLength+chamberLength*3/2), 
+		   G4ThreeVector(0., 0., targetPos+frontSpace+fTargetLength/2+magnetLength+chamberLength*3/2), 
 		   beamPipe2LV, 
 		   "beampipe2", 
 		   worldLV, 
@@ -590,7 +594,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., frontSpace+targetPos+targetLength/2+magnetLength+chamberLength*5/2), 
+		   G4ThreeVector(0., 0., frontSpace+targetPos+fTargetLength/2+magnetLength+chamberLength*5/2), 
 		   beamPipe3LV, 
 		   "beampipe3", 
 		   worldLV, 
@@ -599,7 +603,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., frontSpace+targetPos+targetLength/2+magnetLength-.3*cm), 
+		   G4ThreeVector(0., 0., frontSpace+targetPos+fTargetLength/2+magnetLength-.3*cm), 
 		   barrier0LV, 
 		   "barrier0", 
 		   worldLV, 
@@ -608,7 +612,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., frontSpace+targetPos+targetLength/2+magnetLength+chamberLength-.3*cm), 
+		   G4ThreeVector(0., 0., frontSpace+targetPos+fTargetLength/2+magnetLength+chamberLength-.3*cm), 
 		   barrier1LV, 
 		   "barrier1", 
 		   worldLV, 
@@ -617,7 +621,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., frontSpace+targetPos+targetLength/2+magnetLength+chamberLength*2-.3*cm), 
+		   G4ThreeVector(0., 0., frontSpace+targetPos+fTargetLength/2+magnetLength+chamberLength*2-.3*cm), 
 		   barrier2LV, 
 		   "barrier2", 
 		   worldLV, 
@@ -626,7 +630,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., frontSpace+targetPos+targetLength/2+magnetLength+3*chamberLength-.1*cm), 
+		   G4ThreeVector(0., 0., frontSpace+targetPos+fTargetLength/2+magnetLength+3*chamberLength-.1*cm), 
 		   barrier3LV, 
 		   "barrier3", 
 		   worldLV, 
@@ -635,7 +639,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		   G4ThreeVector(0., 0., magnetLength+frontSpace+targetPos+targetLength/2+spacing+3*chamberLength+toDumpLength/2), 
+		   G4ThreeVector(0., 0., magnetLength+frontSpace+targetPos+fTargetLength/2+spacing+3*chamberLength+toDumpLength/2), 
 		   beamPipe4LV, 
 		   "beamPipe4", 
 		   worldLV, 
@@ -704,7 +708,7 @@ G4LogicalVolume * pipeVoidLV =
 
      new G4PVPlacement(
 		   0, 
-		   G4ThreeVector(0., 0., targetPos-blL/2-targetLength/2), 
+		   G4ThreeVector(0., 0., targetPos-blL/2-fTargetLength/2), 
 		   beamlineLV, 
 		   "Beamline", 
 		   worldLV, 
@@ -715,7 +719,7 @@ G4LogicalVolume * pipeVoidLV =
      
      new G4PVPlacement(
 		   0, 
-		   G4ThreeVector(0., 0., targetPos-blL/2-targetLength),
+		   G4ThreeVector(0., 0., targetPos-blL/2-fTargetLength),
 		   beamVoidLV, 
 		   "BeamVoid", 
 		   worldLV, 
@@ -974,8 +978,10 @@ void DetectorConstruction::SetMaxStep(G4double maxStep)
   if ((fStepLimit)&&(maxStep>0.)) fStepLimit->SetMaxAllowedStep(maxStep);
 }
 
+
 void DetectorConstruction::SetCalorDist(G4double distance)
 {
+  /*
   fCalorDist = distance; 
   
   for (int i=0; i<1225; i++)
@@ -990,13 +996,13 @@ void DetectorConstruction::SetCalorDist(G4double distance)
   for (int i=0; i<1225; i++)
     {
       G4ThreeVector temp =fPhysCalor[i]->GetTranslation();
-      fPhysCalor[i]->SetTranslation(temp->getX(), temp->getY(), .5*fCalorDist+.5*fTargetLength);
+      fPhysCalor[i]->SetTranslation(G4ThreeVector(temp.getX(), temp.getY(), .5*fCalorDist+.5*fTargetLength));
     }
 
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
+  */
 
 }
-
 void DetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
 {
   fCheckOverlaps = checkOverlaps; 
