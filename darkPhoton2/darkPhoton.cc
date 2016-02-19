@@ -25,6 +25,9 @@
 #include "G4StepLimiterPhysics.hh"
 #include "FTFP_BERT.hh"
 #include "Randomize.hh"
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 
 //Visualization
@@ -65,6 +68,14 @@ int main(int argc, char** argv)
 
   //use specific physics list
   //Standard is FTFP_BERT
+  //Tell out output file this
+
+  ofstream file1;
+  file1.open ("../darkPhotonBuild2/output.txt", std::ofstream::app);
+  file1 << " \n The physics list used is: FTFP_BERT \n ";
+  file1.close();
+    
+
   G4VModularPhysicsList* physicsList = new FTFP_BERT(0);
   physicsList->RegisterPhysics(new G4StepLimiterPhysics());
   runManager->SetUserInitialization(physicsList);
