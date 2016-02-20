@@ -53,7 +53,9 @@
 
 #include "G4PVParameterised.hh"
 #include "VacVesselParam.hh"
-
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 static const G4double inch = 2.54*cm;
 static const G4double ft = 12*inch;
@@ -250,6 +252,13 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double frontSpace = .56*m;
   G4double chamberLength = (calorSpacing-3*spacing-frontSpace-magnetLength)/3;
   G4double toDumpLength = 35.*cm;
+
+  ofstream file;
+  file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
+  file << "Geometry specis: \n";
+  file << "Distance from target to calorimeter: " << calorSpacing;
+  file.close();
+
 
 
 
