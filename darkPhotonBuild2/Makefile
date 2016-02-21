@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/local1/MMAPS/MMAPS/darkPhoton2
+CMAKE_SOURCE_DIR = /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhoton2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/local1/MMAPS/MMAPS/darkPhotonBuild2
+CMAKE_BINARY_DIR = /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -113,9 +113,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/local1/MMAPS/MMAPS/darkPhotonBuild2/CMakeFiles /home/local1/MMAPS/MMAPS/darkPhotonBuild2/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/CMakeFiles /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/local1/MMAPS/MMAPS/darkPhotonBuild2/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
