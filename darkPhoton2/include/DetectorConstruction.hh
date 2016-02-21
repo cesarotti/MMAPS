@@ -65,7 +65,8 @@ private:
   //for setCalorPos command
   G4VPhysicalVolume** fPhysCalor; //pointer to calorimeter physical volumes
   G4double fCalorDist; //distance from middle of target to center of crystal
-  
+  G4int fNchambers; // Number of chambers in vacuum vessel
+  G4double fCapThickness; //thickness of caps in vacuum vessel
 
   G4Material* fTargetMaterial; // pointer to target material
   G4Material* fCalorMaterial; // pointer to calorimeter material

@@ -70,6 +70,8 @@ DetectorConstruction::DetectorConstruction()
     fLogicCalor(NULL), //logical volume for calorimeter
     fPhysCalor(NULL), //physical placement of all crystals
     fCalorDist(0.), //distance to target
+    fNchambers(1), // chambers in vacuum vessel
+    fCapThickness(0.), //thickness of caps in VV
     fLogicTarget(NULL),
     fTargetMaterial(NULL), //material of target
     fCalorMaterial(NULL), //material of calorimeter
@@ -247,6 +249,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double targetPos = -(.5*calorSpacing); //position of Z coordinate of target
   G4double magnetLength= .98*m;
   G4double magnetFace = .1*m;
+  G4double magnetWidth = .7*m;
   G4double calorDist = .5*calorSpacing + .5*fTargetLength;
   G4double spacing = 1.*cm;
   G4double frontSpace = .56*m;
@@ -255,8 +258,10 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
 
   ofstream file;
   file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
-  file << "Geometry specis: \n";
-  file << "Distance from target to calorimeter: " << calorSpacing;
+  file << "Geometry specis: \n" << endl;
+  file << "Distance from target to calorimeter: " << calorSpacing/1000 << " m"  << endl;
+  file << "Target material: " << fTargetMaterial << endl;
+  file << "Number of chambers in detector: " << 4 << endl;
   file.close();
 
 
@@ -286,6 +291,28 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double worldW = 30.*ft;
 
 
+  //Parameterized vacuum vessel
+
+  //Length of each segement is the same
+  //First segment will always be the one that fits inbetween the magnets
+  fNchambers =1;
+  fCapThickness = .3*mm;
+  
+
+
+  G4double firstSeg = frontSpace+magnetLength+spacing;
+  G4double distLeft = calorDist-firstSeg-spacing;
+  G4double nStageLength = distLeft/fNchambers;
+  G4double posCham, stageRad, capRad;
+  
+  for (G4int n=0; n<fNchambers; n++)
+    {
+      posCham = firstSeg+(n+.5)*nStageLength;
+      stageRad = (firstSeg+nStageLength*fCapThickness)*magnetWidth/(2*firstSeg);
+     
+    }
+  
+  
   
 
  
@@ -413,6 +440,8 @@ G4VSolid* boxS =
      }			  
    }
 
+
+ 
  G4VSolid* ceiling = new G4Box("ceiling", worldW/2, ceilingW/2, worldLength/2);
  G4VSolid* floor = new G4Box("floor", worldW/2, floorW/2, worldLength/2);
 
@@ -420,18 +449,18 @@ G4VSolid* boxS =
    new G4LogicalVolume(ceiling, fVacuumMaterial, "ceilingLV"); //fWallMaterial
  G4LogicalVolume * floorLV = 
    new G4LogicalVolume(floor, fVacuumMaterial, "floorLV"); //fWallMaterial
-
-
-     //Wall blocks
-     G4VSolid* wall = new G4Box("wallBlock", wallW/2, wallH/2, wallL/2);
-     G4LogicalVolume* wallLV = 
+ 
+ 
+ //Wall blocks
+ G4VSolid* wall = new G4Box("wallBlock", wallW/2, wallH/2, wallL/2);
+ G4LogicalVolume* wallLV = 
        new G4LogicalVolume(wall, fVacuumMaterial, "WallLV"); //fVacuumMaterial
-
  
 
 
 
 
+ 
 //beamline
 
  G4VSolid * beamline = 
@@ -455,6 +484,8 @@ G4VSolid* boxS =
 		       beamVoid, 
 		       fVacuumMaterial, 
 		       "beamVoidLV");
+
+ 
 
 
  //Chambers & Magnet
@@ -531,7 +562,7 @@ G4LogicalVolume * pipeVoidLV =
 
  //Magnet
  new G4PVPlacement(0, 
-		 G4ThreeVector(35.*cm+magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
+		 G4ThreeVector(magnetWidth/2+magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
 		 magnet1LV, 
 		 "Magnet", 
 		 worldLV, 
@@ -540,7 +571,7 @@ G4LogicalVolume * pipeVoidLV =
 		 fCheckOverlaps);
 
  new G4PVPlacement(0, 
-		 G4ThreeVector(-35.*cm-magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
+		 G4ThreeVector(-magnetWidth/2-magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
 		 magnet1LV, 
 		 "Magnet", 
 		 worldLV, 
@@ -549,7 +580,7 @@ G4LogicalVolume * pipeVoidLV =
 		 fCheckOverlaps);
  
  //Parameterization
-
+ /*
  G4VSolid* motherS = new G4Tubs("motherS", 0., 40.*5*cm, calorDist/2, 0.*deg, 360.*deg);
 
  G4LogicalVolume* motherLV = new G4LogicalVolume(motherS, fVacuumMaterial, "motherLV");
@@ -581,7 +612,7 @@ G4LogicalVolume* vesselLV =
 		   vacParam, 
 		   fCheckOverlaps);
 		   
-		   
+ */	   
 		   
 
 
