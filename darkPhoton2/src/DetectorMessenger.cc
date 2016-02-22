@@ -13,6 +13,7 @@
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithAnInteger.hh"
 
 DetectorMessenger::DetectorMessenger(DetectorConstruction* Det)
  : G4UImessenger(),
@@ -41,6 +42,11 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* Det)
   fCalPosCmd->SetUnitCategory("Length");
   fCalPosCmd->AvailableForStates(G4State_Idle); 
 
+  fChamNumCmd = new G4UIcmdWithAnInteger("/darkPhotons/det/setChamNum", this);
+  fChamNumCmd->SetGuidance("Define number of chambers");
+  fChamNumCmd->SetParameterName("chamNum", false);
+  fChamNumCmd->AvailableForStates(G4State_Idle);
+
 }
 
 
@@ -49,6 +55,7 @@ DetectorMessenger::~DetectorMessenger()
   //delete fTargMatCmd;
   delete fCalMatCmd;
   delete fStepMaxCmd;
+  delete fChamNumCmd;
   delete fCalPosCmd; 
   delete fDirectory;
   delete fDetDirectory;
@@ -72,5 +79,10 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
   if( command == fCalPosCmd ) {
     fDetectorConstruction
            ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
+  }
+
+  if( command == fChamNumCmd ) {
+    fDetectorConstruction
+      ->SetChamberNumber(fChamNumCmd->GetNewIntValue(newValue));
   }
 }
