@@ -45,6 +45,7 @@ public:
   void SetMaxStep(G4double );
   void SetCalorDist(G4double );
   void SetChamberMaterial (G4String ); //Changes material of vacuum chamber from detector messenger
+  void SetChamberNumber(G4int );
   void SetCheckOverlaps(G4bool );
 
   //get methods

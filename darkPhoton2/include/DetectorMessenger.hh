@@ -15,6 +15,7 @@ class DetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithAnInteger;
 
 /*
  * The messenger class defines commands for the 
@@ -42,6 +43,8 @@ private:
   G4UIcmdWithADoubleAndUnit* fStepMaxCmd;
 
   G4UIcmdWithADoubleAndUnit* fCalPosCmd;
+
+  G4UIcmdWithAnInteger* fChamNumCmd;
 
 };
 
