@@ -52,9 +52,9 @@
 #include "G4PropagatorInField.hh"
 
 #include "G4PVParameterised.hh"
-#include "VacVesselParam.hh"
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 static const G4double inch = 2.54*cm;
@@ -93,7 +93,7 @@ DetectorConstruction::DetectorConstruction()
  fMessenger = new DetectorMessenger(this);
  fLogicCalor = new G4LogicalVolume*[1225];
  fPhysCalor = new G4VPhysicalVolume*[1225];
- CLEObool =false;
+ CLEObool =true;
 }
 
 DetectorConstruction::~DetectorConstruction()
@@ -143,7 +143,7 @@ void DetectorConstruction::DefineMaterials()
   fBeamDumpMaterial = new G4Material(name="Aluminum", z=13., a, density);
   fBeamLineMaterial = new G4Material(name="Aluminum", z=13., a, density);
   //fBeamLineMaterial = nistManager->FindOrBuildMaterial("G4_STAINLESS-STEEL");
-  
+ 
 
 
   //Vacuum for chamber
@@ -227,7 +227,7 @@ void DetectorConstruction::DefineMaterials()
   fLiningMaterial = Pb;
 
   //Print Materials
-  G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+  //G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 
 
 }
@@ -256,13 +256,15 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double chamberLength = (calorSpacing-3*spacing-frontSpace-magnetLength)/3;
   G4double toDumpLength = 35.*cm;
 
+  /*
   ofstream file;
   file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
-  file << "Geometry specis: \n" << endl;
+  file << "Geometry specs: \n" << endl;
   file << "Distance from target to calorimeter: " << calorSpacing/1000 << " m"  << endl;
   file << "Target material: " << fTargetMaterial << endl;
-  file << "Number of chambers in detector: " << 4 << endl;
+  file << "Number of chambers in detector: " << fNchambers << endl;
   file.close();
+  */
 
 
 
@@ -288,35 +290,7 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   //floor and ceiling
   G4double floorW = 20.*ft;
   G4double ceilingW = 20.*ft;
-  G4double worldW = 30.*ft;
-
-
-  //Parameterized vacuum vessel
-
-  //Length of each segement is the same
-  //First segment will always be the one that fits inbetween the magnets
-  fNchambers =1;
-  fCapThickness = .3*mm;
-  
-
-
-  G4double firstSeg = frontSpace+magnetLength+spacing;
-  G4double distLeft = calorDist-firstSeg-spacing;
-  G4double nStageLength = distLeft/fNchambers;
-  G4double posCham, stageRad, capRad;
-  
-  for (G4int n=0; n<fNchambers; n++)
-    {
-      posCham = firstSeg+(n+.5)*nStageLength;
-      stageRad = (firstSeg+nStageLength*fCapThickness)*magnetWidth/(2*firstSeg);
-     
-    }
-  
-  
-  
-
- 
-
+  G4double worldW = 30.*ft; 
 
   G4GeometryManager::GetInstance()->SetWorldMaximumExtent(worldLength);
 
@@ -439,6 +413,68 @@ G4VSolid* boxS =
        		
      }			  
    }
+
+
+  //Parameterized vacuum vessel
+
+  //Length of each segement is the same
+  //First segment will always be the one that fits inbetween the magnets
+  fNchambers =5;
+  fCapThickness = .3*mm;
+  vector<G4double> stagelength;
+  vector<G4LogicalVolume*> chambers(fNchambers);
+  vector<G4double> stageRad(fNchambers+1);
+  vector<G4VPhysicalVolume*> physChambers(fNchambers);
+  stageRad[0] = magnetWidth/2;
+  
+
+
+  G4double firstSeg = frontSpace+magnetLength-fTargetLength/2+spacing;
+  G4double distLeft = calorSpacing-firstSeg-spacing;
+  G4double nStageLength = distLeft/fNchambers;
+  G4double posCham, capRad;
+  
+  G4Tubs * firstSegS = new G4Tubs("firstSegS", (magnetWidth/2-spacing-fCapThickness), magnetWidth/2-spacing, 
+				  firstSeg/2, 0.*deg, 360.*deg);
+  
+  G4LogicalVolume * firstSegLV = new G4LogicalVolume(firstSegS, fBeamLineMaterial, "firstSegLV", 0, 0, 0);
+
+  new G4PVPlacement(0, G4ThreeVector(0., 0., targetPos+firstSeg/2), 
+		    firstSegLV, "firstSegLV", worldLV, false, 0, fCheckOverlaps);
+
+
+  
+  for (G4int n=0; n<fNchambers; n++)
+    {
+      posCham = firstSeg+(n+.5)*nStageLength+targetPos;
+      stageRad[n+1] = (firstSeg+(n+1)*nStageLength*fCapThickness)*35*crysLength/(distLeft);
+
+        G4Tubs * chamParam =  new G4Tubs("chamber", stageRad[n+1],stageRad[n+1]+fCapThickness, 
+	     nStageLength/2, 0.*deg, 360.*deg);
+
+      chambers[n] = new G4LogicalVolume(chamParam,
+					  fBeamLineMaterial,
+					  "chamberLV", 
+					  0, 0, 0);
+
+      physChambers[n]=new G4PVPlacement(0, 
+					G4ThreeVector(0., 0., posCham), 
+				      chambers[n], 
+				      "ChamberPV", 
+				      worldLV, 
+				      false, 
+				      n, 
+				      fCheckOverlaps);
+      
+     
+    }
+
+  
+  
+
+
+
+
 
 
  
@@ -579,47 +615,8 @@ G4LogicalVolume * pipeVoidLV =
 		 0, 
 		 fCheckOverlaps);
  
- //Parameterization
- /*
- G4VSolid* motherS = new G4Tubs("motherS", 0., 40.*5*cm, calorDist/2, 0.*deg, 360.*deg);
 
- G4LogicalVolume* motherLV = new G4LogicalVolume(motherS, fVacuumMaterial, "motherLV");
-
- new G4PVPlacement (0, 
-		    G4ThreeVector(0., 0., 0.), 
-		    motherLV, 
-		    "Mother", 
-		    worldLV, 
-		    false, 
-		    0, 
-		    fCheckOverlaps);
-
-G4VSolid* vesselS = 
-  new G4Tubs("vesselS", 0., 1.*m, calorDist/2, 0.*deg, 360.*deg);
-
-G4LogicalVolume* vesselLV = 
-  new G4LogicalVolume(vesselS,
-		      fBeamLineMaterial,
-		      "VesselPV"); 
-
- G4VPVParameterisation* vacParam = new VacVesselParam(1, 0., calorDist/2);
-		      
- new  G4PVParameterised("VesselPV", 
-		   vesselLV, 
-		   motherLV, 
-		   kZAxis, 
-		   1, 
-		   vacParam, 
-		   fCheckOverlaps);
-		   
- */	   
-		   
-
-
-
-
-
-
+		
 
 
 
@@ -655,6 +652,7 @@ G4LogicalVolume* vesselLV =
      // Currently being modified such that a much more dynamic and parameterized model 
      // can be implemented and changed in batch mode for optimization studies
      //First unit
+     /*
      new G4PVPlacement(0, 
 		       G4ThreeVector(0., 0., targetPos+(frontSpace+fTargetLength+magnetLength)/2), 
 		       beamPipe0LV, 
@@ -735,7 +733,7 @@ G4LogicalVolume* vesselLV =
 		   false, 
 		       0, 
 		       fCheckOverlaps);
-     
+     */
      
      
      
@@ -1092,6 +1090,14 @@ void DetectorConstruction::SetCalorDist(G4double distance)
   */
 
 }
+
+void DetectorConstruction::SetChamberNumber(G4int chamNum)
+{
+  fNchambers = chamNum; 
+  G4RunManager::GetRunManager()->GeometryHasBeenModified();
+}
+
+
 void DetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
 {
   fCheckOverlaps = checkOverlaps; 
