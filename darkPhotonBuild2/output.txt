@@ -1,4 +1,0 @@
- 
- The physics list used is: FTFP_BERT 
- Geometry specis: 
-Distance from target to calorimeter: 10000
