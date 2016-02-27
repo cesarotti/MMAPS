@@ -1,7 +1,0 @@
-#! /bin/bash
- 
-source /opt/rh/devtoolset-3/enable
-source /nfs/opt/root/bin/thisroot.sh
-
-g++ 'root-config --cflags --libs' -o output scdbgd.C
-./output
