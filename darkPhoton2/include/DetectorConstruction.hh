@@ -12,12 +12,15 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "tls.hh"
 
+#include <iostream>
+#include <fstream>
+#include <vector>
+
 class G4VPhysicalVolume;
 class G4LogicalVolume;
 class G4Material;
 class G4UserLimits;
 class G4GlobalMagFieldMessenger;
-
 class DetectorMessenger;
 
 /*
@@ -47,6 +50,7 @@ public:
   void SetChamberMaterial (G4String ); //Changes material of vacuum chamber from detector messenger
   void SetChamberNumber(G4int );
   void SetCheckOverlaps(G4bool );
+  void PositionChambers(G4double );
 
   //get methods
   // G4double GetCalorDistance();
@@ -57,6 +61,7 @@ private:
   //methods
   void DefineMaterials(); //defines materials for elements of the detector
   G4VPhysicalVolume* DefineVolumes(); //defines geometry
+  
 
   //data members
 
@@ -65,9 +70,12 @@ private:
   
   //for setCalorPos command
   G4VPhysicalVolume** fPhysCalor; //pointer to calorimeter physical volumes
+  G4VPhysicalVolume** fVolumesShiftedByCalorDist; //duh
   G4double fCalorDist; //distance from middle of target to center of crystal
   G4int fNchambers; // Number of chambers in vacuum vessel
   G4double fCapThickness; //thickness of caps in vacuum vessel
+  G4LogicalVolume* worldLV; //the world logical vol
+ 
 
   G4Material* fTargetMaterial; // pointer to target material
   G4Material* fCalorMaterial; // pointer to calorimeter material
@@ -81,6 +89,7 @@ private:
   G4Material* fBeamLineMaterial; //duh
   G4Material* fScintillatorMaterial;
   G4Material* fMagnetMaterial; 
+
 
   G4double fTargetLength;
 

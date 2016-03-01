@@ -98,7 +98,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	      eDep = hit->GetEnergyDep();
 	      if (eDep > 0)
 		{
-		  //analysisMan->FillNtupleDColumn(0, i, eDep);
+		  analysisMan->FillNtupleDColumn(0, i, eDep);
 		  totalEnergy+=eDep;
 		  hits = true;
 		}

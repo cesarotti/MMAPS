@@ -14,6 +14,12 @@ cd darkPhotonBuild2
 
 
 
+currentfolder=$(date +%Y:%m:%d#%H:%M:%S)
+echo "Today's date is " >> output.txt
+date +%Y:%m:%d#%H:%M:%S >> output.txt
+
+
+
 # export G4LIB_USE_GDML=0
 # export XERCESCROOT=/build/dmendezl/CMSSW_7_2_0_pre4-build/slc6_amd64_gcc491/external/xerces-c/2.8.0-cms
 # export G4LIB_BUILD_SHARED=1
@@ -29,6 +35,7 @@ env Geant4_DIR=/home/een7/10.00.p03 \
 #make -j4
 #./darkPhoton
 
+<<<<<<< HEAD:builddarkphotonsCLASSE.sh~
 #currentfolder=$(date +%Y:%m:%d#%H:%M:%S)
 #mkdir ../$currentfolder
 #mv *.root  ../$currentfolder
@@ -39,3 +46,16 @@ env Geant4_DIR=/home/een7/10.00.p03 \
 #mv *.root threadfiles
 #cd threadfiles
 #mv complete.root ../
+=======
+
+mkdir ../$currentfolder
+mv *.root  ../$currentfolder
+rm -rf *.root
+cd ../$currentfolder
+mv /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/output.txt ./
+hadd complete.root *.root
+mkdir threadfiles
+mv *.root threadfiles
+cd threadfiles
+mv complete.root ../
+>>>>>>> 3868889cf97bf303e6800d13c20da604b00bbdc9:builddarkphotonCLASSE.sh

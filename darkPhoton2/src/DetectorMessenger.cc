@@ -85,4 +85,6 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     fDetectorConstruction
       ->SetChamberNumber(fChamNumCmd->GetNewIntValue(newValue));
   }
+
+  
 }
