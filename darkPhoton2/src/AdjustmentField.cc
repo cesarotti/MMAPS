@@ -1,6 +1,8 @@
 #include "G4SystemOfUnits.hh"
 #include "AdjustmentField.hh"
 #include <fstream>
+#include <iostream>
+#include <vector>
 
 //THIS IS FOR THE SEXTAPOLE
 
@@ -36,6 +38,13 @@ AdjustmentField::AdjustmentField()
 
   std::string line;
 
+
+  //Since everything else is hard coded, hard code this too
+  ofstream outfile;
+  outfile.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
+  outfile << "The magnet file used is six_map.table " << endl;
+  outfile.close();
+ 
 
   center.x = 0;
   center.y = 0;
@@ -113,6 +122,11 @@ void AdjustmentField::GetFieldValue(const double Point[3],double *Bfield) const
 {
 
   G4double constFactor = 1.0;
+
+  ofstream outfile;
+  outfile.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
+  outfile << "Scaling factor on magnetic field is: " << constFactor << endl;
+  outfile.close();
 
   //printf("Evaluating magfield at %f, %f, %f\n", Point[0], Point[1], Point[2]);
 

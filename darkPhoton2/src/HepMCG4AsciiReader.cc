@@ -59,13 +59,13 @@ void HepMCG4AsciiReader::Initialize()
   
   asciiInput= new HepMC::IO_GenEvent(filename.c_str(), std::ios::in);
   //Save background
-  /*
+  
   ofstream file;
   file.open ("../darkPhotonBuild2/output.txt", std::ofstream::app);
   file << "The backgound file is ";
   file << filename.c_str();
   file.close();
-  */
+  
   
   
 }

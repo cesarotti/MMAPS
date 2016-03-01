@@ -268,17 +268,23 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double chamberLength = (calorSpacing-3*spacing-frontSpace-magnetLength)/3;
   G4double toDumpLength = 35.*cm;
 
+  fNchambers =5;
+  fCapThickness = .3*mm;
+
   
 
-  /*
+  
   ofstream file;
   file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
   file << "Geometry specs: \n" << endl;
   file << "Distance from target to calorimeter: " << calorSpacing/1000 << " m"  << endl;
   file << "Target material: " << fTargetMaterial << endl;
-  file << "Number of chambers in detector: " << fNchambers << endl;
+  file << "Target size: " << fTargetLength << endl;
+  file << "Number of vacuum chambers in detector: " << fNchambers << endl;
+  file << "Thickness of vacuum chamber: " << fCapThickness << endl;
+  file << "Material of vacuum chamber: " << fBeamLineMaterial << endl;
   file.close();
-  */
+  
 
 
 
@@ -432,9 +438,7 @@ G4VSolid* boxS =
   //Parameterized vacuum vessel
 
   //Length of each segement is the same
-  //First segment will always be the one that fits inbetween the magnets
-  fNchambers =5;
-  fCapThickness = .3*mm;
+  //First segment will always be the one that fits inbetween the magnets 
 
 
   DetectorConstruction::PositionChambers(calorSpacing);
@@ -1095,12 +1099,6 @@ void DetectorConstruction::SetCheckOverlaps(G4bool checkOverlaps)
 
 void DetectorConstruction::PositionChambers(G4double distance)
 {
-
-  delete physChambers; 
-
-
-  G4RunManager::GetRunManager()->GeometryHasBeenModified();
-
 
   vector<G4double> stagelength;
   vector<G4LogicalVolume*> chambers(fNchambers);

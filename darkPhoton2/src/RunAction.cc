@@ -41,7 +41,7 @@ RunAction::RunAction()
   //doesn't require this information, and we can save a lot of memory by not 
   //writing it.
 
-  /*
+  
       for (G4int j = 0; j<1225; j++)
 	{
 	  std::stringstream ss2; 
@@ -50,14 +50,14 @@ RunAction::RunAction()
 	  analysisMan->CreateNtupleDColumn("Crystal_"+str);
 	}
       //These next 3 columns are for testing code only
+      /*
       analysisMan->CreateNtupleDColumn("EventTime");
       analysisMan->CreateNtupleDColumn("EventEnergy");
       analysisMan->CreateNtupleIColumn("ID");
       analysisMan->CreateNtupleIColumn("EventID");
-
-
       analysisMan->CreateNtupleIColumn("hits");
-  */
+      */
+  
       analysisMan->FinishNtuple(); 
 
       //Omni detector in front of calorimeter
