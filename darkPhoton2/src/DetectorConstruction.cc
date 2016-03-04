@@ -58,6 +58,7 @@
 
 using namespace std;
 vector<G4VPhysicalVolume*> physChambers(3);
+vector<G4VPhysicalVolume*> physCaps(3);
 static const G4double inch = 2.54*cm;
 static const G4double ft = 12*inch;
 G4double spacing;
@@ -67,7 +68,7 @@ G4double frontSpace;
 G4double targetPos=0;
 G4double crystalLength;
 G4double crysLength;
-
+G4double fChamThickness;
 
 
 
@@ -91,7 +92,7 @@ DetectorConstruction::DetectorConstruction()
     fWorldMaterial(NULL),
     worldLV(NULL),
     fStepLimit(NULL), 
-    fCheckOverlaps(true), 
+    fCheckOverlaps(false), 
     fLiningMaterial(NULL), 
     fVacuumMaterial(NULL),
     fBeamLineMaterial(NULL),
@@ -104,7 +105,7 @@ DetectorConstruction::DetectorConstruction()
  fMessenger = new DetectorMessenger(this);
  fLogicCalor = new G4LogicalVolume*[1225];
  fPhysCalor = new G4VPhysicalVolume*[1225];
- fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[3];
+ fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
  CLEObool =true;
 }
 
@@ -269,8 +270,8 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   G4double toDumpLength = 35.*cm;
 
   fNchambers =5;
-  fCapThickness = .3*mm;
-
+  fCapThickness = .6*mm;
+  fChamThickness = .21*mm;
   
 
   
@@ -281,8 +282,9 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
   file << "Target material: " << fTargetMaterial << endl;
   file << "Target size: " << fTargetLength << endl;
   file << "Number of vacuum chambers in detector: " << fNchambers << endl;
-  file << "Thickness of vacuum chamber: " << fCapThickness << endl;
+  file << "Thickness of vacuum chamber: " << fChamThickness << endl;
   file << "Material of vacuum chamber: " << fBeamLineMaterial << endl;
+  file << "Full geometry on? : " << CLEObool << endl;
   file.close();
   
 
@@ -585,7 +587,7 @@ G4LogicalVolume * pipeVoidLV =
  
 
 		
-
+ G4int calorIndex =0;
 
 
  //CLEO stuff
@@ -712,7 +714,7 @@ G4LogicalVolume * pipeVoidLV =
      for(int w=0; w<3; w++)
        {
 	 new G4PVPlacement(0, 
-			   G4ThreeVector(-2.5*ft-.75*ft*w,0., targetPos+wallTotarget+4*ft*w), 
+			   G4ThreeVector(-2.75*ft-1.*ft*w,0., targetPos+wallTotarget+4*ft*w), 
 			   wallLV, 
 			   "wallBlock",
 			   worldLV, 
@@ -724,7 +726,7 @@ G4LogicalVolume * pipeVoidLV =
      for(int w=0; w<7; w++)
        {
 	 new G4PVPlacement(0, 
-			   G4ThreeVector(-5*ft,0., targetPos+wallTotarget+4*ft*(w+3)), 
+			   G4ThreeVector(-6*ft,0., targetPos+wallTotarget+4*ft*(w+3)), 
 			   wallLV, 
 			   "wallBlock",
 			   worldLV, 
@@ -736,7 +738,7 @@ G4LogicalVolume * pipeVoidLV =
      for(int w=0; w<3; w++)
        {
        new G4PVPlacement(0, 
-			 G4ThreeVector(3*ft,0., targetPos+wallTotarget-2*ft-4*ft*w), 
+			 G4ThreeVector(4*ft,0., targetPos+wallTotarget-2*ft-4*ft*w), 
 			 wallLV, 
 			 "wallBlock",
 			 worldLV, 
@@ -747,7 +749,7 @@ G4LogicalVolume * pipeVoidLV =
  for(int w=0; w<4; w++)
    {
      new G4PVPlacement(0, 
-		       G4ThreeVector(3*ft-.25*ft*w,0., targetPos+wallTotarget-10*ft-4*ft*w), 
+		       G4ThreeVector(4*ft-.75*ft*w,0., targetPos+wallTotarget-10*ft-4*ft*w), 
 		       wallLV, 
 		       "wallBlock",
 			 worldLV, 
@@ -785,7 +787,7 @@ G4LogicalVolume * pipeVoidLV =
  
  //beam pipe
  //can't place with beamLine3
- G4int calorIndex =0;
+ 
 
  fVolumesShiftedByCalorDist[calorIndex] = 
    new G4PVPlacement(0, 
@@ -899,7 +901,7 @@ calorIndex++;
 
      G4LogicalVolume* omniLV = 
        new G4LogicalVolume(omni, fVacuumMaterial, "OmniLV");
-     /*
+    
       fVolumesShiftedByCalorDist[calorIndex] =new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0.,fCalorDist-.5*mm), 
 		   omniLV, 
@@ -910,7 +912,7 @@ calorIndex++;
 		   fCheckOverlaps);
 
 calorIndex++;
-     */
+     
 
 
 
@@ -1102,9 +1104,12 @@ void DetectorConstruction::PositionChambers(G4double distance)
 
   vector<G4double> stagelength;
   vector<G4LogicalVolume*> chambers(fNchambers);
+  vector<G4LogicalVolume*> caps(fNchambers+1);
   vector<G4double> stageRad(fNchambers+1);
   vector<G4VPhysicalVolume*> physChambers2(fNchambers);
+  vector<G4VPhysicalVolume*> physCaps2(fNchambers+1);
   physChambers=physChambers2;
+  physCaps=physCaps2;
   stageRad[0] = magnetWidth/2;
 
   G4double firstSeg = frontSpace+magnetLength-fTargetLength/2+spacing;
@@ -1112,7 +1117,7 @@ void DetectorConstruction::PositionChambers(G4double distance)
   G4double nStageLength = distLeft/fNchambers;
   G4double posCham, capRad;
   
-  G4Tubs * firstSegS = new G4Tubs("firstSegS", (magnetWidth/2-spacing-fCapThickness), magnetWidth/2-spacing, 
+  G4Tubs * firstSegS = new G4Tubs("firstSegS", (magnetWidth/2-spacing-fChamThickness), magnetWidth/2-spacing, 
 				  firstSeg/2, 0.*deg, 360.*deg);
   
   G4LogicalVolume * firstSegLV = new G4LogicalVolume(firstSegS, fBeamLineMaterial, "firstSegLV", 0, 0, 0);
@@ -1125,15 +1130,24 @@ void DetectorConstruction::PositionChambers(G4double distance)
   for (G4int n=0; n<fNchambers; n++)
     {
       posCham = firstSeg+(n+.5)*nStageLength+targetPos;
-      stageRad[n+1] = (firstSeg+(n+1)*nStageLength*fCapThickness)*35*crysLength/(distLeft);
+      stageRad[n+1] = (firstSeg+(n+1)*nStageLength*fChamThickness)*35*crysLength/(distLeft);
 
-        G4Tubs * chamParam =  new G4Tubs("chamber", stageRad[n+1],stageRad[n+1]+fCapThickness, 
+        G4Tubs * chamParam =  new G4Tubs("chamber", stageRad[n+1],stageRad[n+1]+fChamThickness, 
 	     nStageLength/2, 0.*deg, 360.*deg);
 
       chambers[n] = new G4LogicalVolume(chamParam,
 					  fBeamLineMaterial,
 					  "chamberLV", 
 					  0, 0, 0);
+
+      G4Tubs * capParam = new G4Tubs("cap", stageRad[n]+fChamThickness-.1*cm, stageRad[n+1]+fChamThickness-.1*cm, fCapThickness/2, 0.*deg, 
+				     360.*deg);
+      
+      caps[n] = new G4LogicalVolume(capParam, 
+				    fBeamLineMaterial, 
+				    "capsLV", 
+				    0, 0, 0);
+
 
       physChambers[n]=new G4PVPlacement(0, 
 					G4ThreeVector(0., 0., posCham), 
@@ -1143,11 +1157,40 @@ void DetectorConstruction::PositionChambers(G4double distance)
 				      false, 
 				      n, 
 				      fCheckOverlaps);
-      
-     
+
+      G4cout << n << G4endl;
+
+      physCaps[n] = new G4PVPlacement(0, 
+				      G4ThreeVector(0., 0., posCham+.5*nStageLength-.5*fCapThickness), 
+				      caps[n], 
+				      "CapsPV", 
+				      worldLV, 
+				      false, 
+				      n,
+				      fCheckOverlaps);
+				    
+				      
+			       
     }
 
-   
+      G4Tubs * capParam = new G4Tubs("cap", 20.*cm, stageRad[fNchambers]-fChamThickness, fCapThickness/2, 0.*deg, 
+				     360.*deg);
+      
+      caps[fNchambers] = new G4LogicalVolume(capParam, 
+				    fBeamLineMaterial, 
+				    "capsLV", 
+				    0, 0, 0);
+
+      physCaps[fNchambers] = new G4PVPlacement(0, 
+				      G4ThreeVector(0., 0., firstSeg+(fNchambers)*nStageLength+ targetPos-.5*fCapThickness), 
+				      caps[fNchambers], 
+				      "CapsPV", 
+				      worldLV, 
+				      false, 
+				      fNchambers,
+				      fCheckOverlaps);
+
+   caps[fNchambers]->SetVisAttributes(new G4VisAttributes(G4Colour(1., 0., 0.)));
 
  
 }
