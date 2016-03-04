@@ -123,10 +123,6 @@ void AdjustmentField::GetFieldValue(const double Point[3],double *Bfield) const
 
   G4double constFactor = 1.0;
 
-  ofstream outfile;
-  outfile.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
-  outfile << "Scaling factor on magnetic field is: " << constFactor << endl;
-  outfile.close();
 
   //printf("Evaluating magfield at %f, %f, %f\n", Point[0], Point[1], Point[2]);
 

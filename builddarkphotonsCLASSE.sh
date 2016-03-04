@@ -1,3 +1,4 @@
+
 #!/bin/bash                                                                     
 # Run annihilation                                                              
 
@@ -9,8 +10,12 @@ export G4LEDATA="/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/geant4-G4EMLOW/6.
 export G4LEVELGAMMADATA="/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/geant4-G4PhotonEvaporation/3.0/data/PhotonEvaporation3.0/"
 export G4SAIDXSDATA="/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/geant4-G4SAIDDATA/1.1/data/G4SAIDDATA1.1/"
 export G4NEUTRONXSDATA="/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/geant4-G4NEUTRONXS/1.4/data/G4NEUTRONXS1.4/"
+rm -rf darkPhotonBuild2/*
+cd /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2
 
-cd darkPhotonBuild2
+currentfolder=$(date +%Y:%m:%d#%H:%M:%S)
+echo "Today's date is " >> output.txt
+date +%Y:%m:%d#%H:%M:%S >> output.txt
 
 
 
@@ -20,22 +25,23 @@ cd darkPhotonBuild2
 
 env Geant4_DIR=/home/een7/10.00.p03 \
 cmake -DGeant4_BUILD_MULTITHREADED=OFF-DGEANT4_USE_GDML=OFF \
-#-DHEPMC_INCLUDE_DIR=/nfs/cms/mc1/cjc359/Dark-Photons/madgraph/hepmcbuild/include/ \
-#-DHEPMC_LIBRARIES=/nfs/cms/mc1/cjc359/Dark-Photons/madgraph/hepmcbuild/lib/libHepMC.so \
-#../darkPhoton2
+-DHEPMC_INCLUDE_DIR=/nfs/cms/mc1/cjc359/Dark-Photons/madgraph/hepmcbuild/include/ \
+-DHEPMC_LIBRARIES=/nfs/cms/mc1/cjc359/Dark-Photons/madgraph/hepmcbuild/lib/libHepMC.so \
+../darkPhoton2
 #-DXERCESC_ROOT_DIR=/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/xerces-c/2.8.0-cms/ -DHEPMC_INCLUDE_DIR=../../madgraph/hepmcbuild/include/ -DXERCESC_INCLUDE_DIR=/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/xerces-c/2.8.0-cms/ -DXERCESC_LIBRARY=/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/xerces-c/2.8.0-cms/ -DH\
 #cmake -DGEANT4_BUILD_MULTITHREADED=ON -DGeant4_DIR=/usr/local/geant4.10.00.p0lib64/Geant4-10.0.0 /home/local1/Dark-Photons/Cari_Code/darkPhoton             
-#make clean
-#make -j4
-#./darkPhoton
+make clean
+make -j4
+./darkPhoton
 
-#currentfolder=$(date +%Y:%m:%d#%H:%M:%S)
-#mkdir ../$currentfolder
-#mv *.root  ../$currentfolder
-#rm -rf *.root
-#cd ../$currentfolder
-#hadd complete.root *.root
-#mkdir threadfiles
-#mv *.root threadfiles
-#cd threadfiles
-#mv complete.root ../
+
+mkdir ../$currentfolder
+mv *.root  ../$currentfolder
+rm -rf *.root
+cd ../$currentfolder
+mv /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/output.txt ./
+hadd complete.root *.root
+mkdir threadfiles
+mv *.root threadfiles
+cd threadfiles
+mv complete.root ../

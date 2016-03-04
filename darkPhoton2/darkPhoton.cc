@@ -84,7 +84,7 @@ int main(int argc, char** argv)
   G4HadronicProcessStore::Instance()->SetVerbose(0);
 
   //Construct and initialize detector construction
-  DetectorConstruction* test = new DetectorConstruction();
+  DetectorConstruction* test = new DetectorConstruction(); //First parameter is distance to target, second is number of chambers
   runManager->SetUserInitialization(test);
 
   //Create Action intialization 

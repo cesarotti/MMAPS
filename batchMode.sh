@@ -13,25 +13,28 @@ export G4NEUTRONXSDATA="/cvmfs/cms.cern.ch/slc6_amd64_gcc491/external/geant4-G4N
 
 
 #cd /nfs/cms/mc1/cjc359/MMAPS/darkPhotonBuild2
-cd ./darkPhotonBuild2
+
+cd /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2
 
 currentfolder=$(date +%Y:%m:%d#%H:%M:%S)
-
-
-echo currentfolder >> ./output.txt
+echo "Today's date is " >> output.txt
+date +%Y:%m:%d#%H:%M:%S >> output.txt
 
 
 # export G4LIB_USE_GDML=0
 # export XERCESCROOT=/build/dmendezl/CMSSW_7_2_0_pre4-build/slc6_amd64_gcc491/external/xerces-c/2.8.0-cms
 # export G4LIB_BUILD_SHARED=1
 
-./darkPhoton runBatch.mac
+
+
+./darkPhoton /nfs/cms/mc1/cjc359/MMAPS_Sim/runBatch2.mac
 
 
 mkdir ../$currentfolder
 mv *.root  ../$currentfolder
 rm -rf *.root
 cd ../$currentfolder
+mv /nfs/cms/mc1/cjc359/MMAPS_Sim/darkPhotonBuild2/output.txt ./
 hadd complete.root *.root
 mkdir threadfiles
 mv *.root threadfiles

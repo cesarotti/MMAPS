@@ -33,7 +33,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
   DetectorConstruction();
-  DetectorConstruction(G4int );
+  DetectorConstruction(G4double, G4int );
   virtual ~DetectorConstruction();
 
 public:

@@ -75,7 +75,44 @@ G4double fChamThickness;
 //G4ThreadLocal
 //G4GlobalMagFieldMessenger* DetectorConstruction::fMagFieldMessenger = 0;
 
+
 DetectorConstruction::DetectorConstruction()
+  : G4VUserDetectorConstruction(),
+    fLogicCalor(NULL), //logical volume for calorimeter                                                                                     
+    fPhysCalor(NULL), //physical placement of all crystals                                                                                  
+    fVolumesShiftedByCalorDist(NULL),
+    fCalorDist(0.), //distance to target                                                                                                    
+    fNchambers(1), // chambers in vacuum vessel                                                                                             
+    fCapThickness(0.), //thickness of caps in VV                                                                                            
+    fLogicTarget(NULL),
+    fTargetMaterial(NULL), //material of target                                                                                             
+    fCalorMaterial(NULL), //material of calorimeter                                                                                         
+    fWallMaterial(NULL),
+    fBeamDumpMaterial(NULL),
+    fCLEOMaterial(NULL),
+    fWorldMaterial(NULL),
+    worldLV(NULL),
+    fStepLimit(NULL),
+    fCheckOverlaps(false),
+    fLiningMaterial(NULL),
+    fVacuumMaterial(NULL),
+    fBeamLineMaterial(NULL),
+    fScintillatorMaterial(NULL),
+    fMagnetMaterial(NULL),
+    fTargetLength(0.),
+    CLEObool(false)
+
+{
+  fMessenger = new DetectorMessenger(this);
+  fLogicCalor = new G4LogicalVolume*[1225];
+  fPhysCalor = new G4VPhysicalVolume*[1225];
+  fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
+  CLEObool =true;
+}
+
+
+
+DetectorConstruction::DetectorConstruction(G4double distance, G4int chamNum)
   : G4VUserDetectorConstruction(),
     fLogicCalor(NULL), //logical volume for calorimeter
     fPhysCalor(NULL), //physical placement of all crystals
@@ -107,6 +144,8 @@ DetectorConstruction::DetectorConstruction()
  fPhysCalor = new G4VPhysicalVolume*[1225];
  fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
  CLEObool =true;
+ fCalorDist = distance;
+ fNchambers = chamNum;
 }
 
 DetectorConstruction::~DetectorConstruction()
