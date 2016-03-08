@@ -69,8 +69,16 @@ G4double targetPos=0;
 G4double crystalLength;
 G4double crysLength;
 G4double fChamThickness;
+G4double fThetaMin = 2*pi/180;
+G4double fThetaMax = 5*pi/180;
 
+//G4double fThetaMin=0; //Minimum angle of omni detector 
+//G4double fThetaMax=12; //Max angle of omni detector
 
+// Saquib's variables to worry about:
+// fThetaMin
+// fThetaMax
+// fCalorDist
 
 //G4ThreadLocal
 //G4GlobalMagFieldMessenger* DetectorConstruction::fMagFieldMessenger = 0;
@@ -107,7 +115,7 @@ DetectorConstruction::DetectorConstruction()
   fLogicCalor = new G4LogicalVolume*[1225];
   fPhysCalor = new G4VPhysicalVolume*[1225];
   fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
-  CLEObool =true;
+  CLEObool =false;
 }
 
 
@@ -297,8 +305,13 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
 
   crystalLength = 2.54*12.0*cm; // 1 ft long xtals
 
+  //SAQUIB THIS IS WHAT YOU CHANGE//
+  // TO OPTIMIZE // 
+  // FOR TARGET DISTANCE //
   G4double calorSpacing = 10*m;//distance from target to calorimeter
-  targetPos = 0; //position of Z coordinate of target
+  
+
+targetPos = 0; //position of Z coordinate of target
   magnetLength= .98*m;
   G4double magnetFace = .1*m;
   magnetWidth = .7*m;
@@ -404,7 +417,8 @@ G4Box* targetS =
  fLogicTarget = 
    new G4LogicalVolume(targetS, fTargetMaterial, "Target", 0,0,0);
  
- 
+ /* 
+
  new G4PVPlacement(0, // no rotation
 		   positionTarget, // at (x,y,z)
 		   fLogicTarget, // logical volume
@@ -420,7 +434,7 @@ G4Box* targetS =
  G4cout << "Target is " << fTargetLength/cm << " cm of " <<
    fTargetMaterial->GetName() << G4endl;
 
-
+ */
 
  //!!!
  //Calorimeter 
@@ -463,6 +477,7 @@ G4VSolid* boxS =
 	 (i>1020 && i<1044) || (i>1056 && i<1078) || (i>1092 && i<1112) ||
 	 (i>1129 && i<1145) || (i>1166 && i<1178))
        {
+	 /*
 	 fPhysCalor[i]=new G4PVPlacement(0, 
 			   position, 
 			   fLogicCalor[i], 
@@ -471,7 +486,7 @@ G4VSolid* boxS =
 			   false, 
 			   i, 
 			   fCheckOverlaps);
-       		
+	 */	
      }			  
    }
 
@@ -606,6 +621,7 @@ G4LogicalVolume * pipeVoidLV =
      
 
  //Magnet
+     /*
  new G4PVPlacement(0, 
 		 G4ThreeVector(magnetWidth/2+magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
 		 magnet1LV, 
@@ -624,7 +640,7 @@ G4LogicalVolume * pipeVoidLV =
 		 0, 
 		 fCheckOverlaps);
  
-
+     */
 		
  G4int calorIndex =0;
 
@@ -643,7 +659,7 @@ G4LogicalVolume * pipeVoidLV =
 	false, 
 	0, 
 	fCheckOverlaps);
-     */
+     
      
      
      new G4PVPlacement(0,
@@ -655,7 +671,7 @@ G4LogicalVolume * pipeVoidLV =
 		       0, 
 		       fCheckOverlaps);
      
-     
+     */
      
      //Modified vacuum chamber
      // Currently being modified such that a much more dynamic and parameterized model 
@@ -934,8 +950,10 @@ calorIndex++;
 
  //Omni detector
 
+
+
      G4VSolid* omni = 
-       new G4Tubs("omniS", .3492*m, .8749*m,
+       new G4Tubs("omniS", fCalorDist*std::tan(fThetaMin), fCalorDist*std::tan(fThetaMax),
 		  .01*cm, 0.*deg, 360.*deg);
 
      G4LogicalVolume* omniLV = 
@@ -1199,6 +1217,8 @@ void DetectorConstruction::PositionChambers(G4double distance)
 
       G4cout << n << G4endl;
 
+
+      /*
       physCaps[n] = new G4PVPlacement(0, 
 				      G4ThreeVector(0., 0., posCham+.5*nStageLength-.5*fCapThickness), 
 				      caps[n], 
@@ -1208,7 +1228,7 @@ void DetectorConstruction::PositionChambers(G4double distance)
 				      n,
 				      fCheckOverlaps);
 				    
-				      
+      */			      
 			       
     }
 
@@ -1219,7 +1239,7 @@ void DetectorConstruction::PositionChambers(G4double distance)
 				    fBeamLineMaterial, 
 				    "capsLV", 
 				    0, 0, 0);
-
+      /*
       physCaps[fNchambers] = new G4PVPlacement(0, 
 				      G4ThreeVector(0., 0., firstSeg+(fNchambers)*nStageLength+ targetPos-.5*fCapThickness), 
 				      caps[fNchambers], 
@@ -1229,7 +1249,8 @@ void DetectorConstruction::PositionChambers(G4double distance)
 				      fNchambers,
 				      fCheckOverlaps);
 
+
    caps[fNchambers]->SetVisAttributes(new G4VisAttributes(G4Colour(1., 0., 0.)));
 
  
-}
+      */}

@@ -62,6 +62,9 @@ RunAction::RunAction()
 
       //Omni detector in front of calorimeter
 
+      // SAQUIB HERE IS WHAT THE OUTPUT OF THE NTUPLE WILL BE 
+      // YOU CARE ABOUT 0, 1, 5, 6, 7
+
       analysisMan->CreateNtuple("Check", "Check");
  
       analysisMan->CreateNtupleDColumn("Energy");
