@@ -75,10 +75,6 @@ G4double fThetaMax = 5*pi/180;
 //G4double fThetaMin=0; //Minimum angle of omni detector 
 //G4double fThetaMax=12; //Max angle of omni detector
 
-// Saquib's variables to worry about:
-// fThetaMin
-// fThetaMax
-// fCalorDist
 
 //G4ThreadLocal
 //G4GlobalMagFieldMessenger* DetectorConstruction::fMagFieldMessenger = 0;
@@ -115,7 +111,7 @@ DetectorConstruction::DetectorConstruction()
   fLogicCalor = new G4LogicalVolume*[1225];
   fPhysCalor = new G4VPhysicalVolume*[1225];
   fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
-  CLEObool =false;
+  CLEObool =true;
 }
 
 
@@ -305,9 +301,6 @@ G4VPhysicalVolume* DetectorConstruction::DefineVolumes()
 
   crystalLength = 2.54*12.0*cm; // 1 ft long xtals
 
-  //SAQUIB THIS IS WHAT YOU CHANGE//
-  // TO OPTIMIZE // 
-  // FOR TARGET DISTANCE //
   G4double calorSpacing = 10*m;//distance from target to calorimeter
   
 
@@ -417,7 +410,7 @@ G4Box* targetS =
  fLogicTarget = 
    new G4LogicalVolume(targetS, fTargetMaterial, "Target", 0,0,0);
  
- /* 
+ 
 
  new G4PVPlacement(0, // no rotation
 		   positionTarget, // at (x,y,z)
@@ -434,7 +427,7 @@ G4Box* targetS =
  G4cout << "Target is " << fTargetLength/cm << " cm of " <<
    fTargetMaterial->GetName() << G4endl;
 
- */
+ 
 
  //!!!
  //Calorimeter 
@@ -477,7 +470,7 @@ G4VSolid* boxS =
 	 (i>1020 && i<1044) || (i>1056 && i<1078) || (i>1092 && i<1112) ||
 	 (i>1129 && i<1145) || (i>1166 && i<1178))
        {
-	 /*
+	 
 	 fPhysCalor[i]=new G4PVPlacement(0, 
 			   position, 
 			   fLogicCalor[i], 
@@ -486,7 +479,7 @@ G4VSolid* boxS =
 			   false, 
 			   i, 
 			   fCheckOverlaps);
-	 */	
+	 	
      }			  
    }
 
@@ -621,7 +614,7 @@ G4LogicalVolume * pipeVoidLV =
      
 
  //Magnet
-     /*
+     
  new G4PVPlacement(0, 
 		 G4ThreeVector(magnetWidth/2+magnetFace/2, 0., frontSpace+targetPos+magnetLength/2), 
 		 magnet1LV, 
@@ -640,7 +633,7 @@ G4LogicalVolume * pipeVoidLV =
 		 0, 
 		 fCheckOverlaps);
  
-     */
+     
 		
  G4int calorIndex =0;
 
@@ -650,7 +643,7 @@ G4LogicalVolume * pipeVoidLV =
    {
  //Floor and Ceiling
 
-     /* 
+     
 	new G4PVPlacement(0, 
 	G4ThreeVector(0., wallH/2+ceilingW/2, 0.),
 	ceilingLV, 
@@ -671,7 +664,7 @@ G4LogicalVolume * pipeVoidLV =
 		       0, 
 		       fCheckOverlaps);
      
-     */
+     
      
      //Modified vacuum chamber
      // Currently being modified such that a much more dynamic and parameterized model 
@@ -894,7 +887,7 @@ G4LogicalVolume * pipeVoidLV =
  
  G4LogicalVolume* shieldLV = new G4LogicalVolume(shield, fLiningMaterial, 
 						 "sheildlv");
- /*
+ 
  fVolumesShiftedByCalorDist[calorIndex]=new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0., fCalorDist+crystalLength+8.*inch+2.*cm),
 		   shieldLV, 
@@ -906,7 +899,7 @@ G4LogicalVolume * pipeVoidLV =
  
 		   calorIndex++;
 
- */
+ 
  
  
 
@@ -933,8 +926,8 @@ G4LogicalVolume * pipeVoidLV =
 				0.*deg, 360.*deg);
  G4LogicalVolume* liningOLV = new G4LogicalVolume(liningO, fLiningMaterial, 
 						  "LiningOLV");
- /*
- fVolumesShiftedByCalorDist[calorIndex] new G4PVPlacement(0, 
+ 
+ fVolumesShiftedByCalorDist[calorIndex] = new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0., fCalorDist+crystalLength/2), 
 		   liningOLV, 
 		   "LiningO",
@@ -944,7 +937,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
 calorIndex++;
- */
+
  
  
 
