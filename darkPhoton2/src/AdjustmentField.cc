@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include "json.hh"
+using namespace std;
 
 //THIS IS FOR THE SEXTAPOLE
 
@@ -11,9 +13,27 @@ AdjustmentField::AdjustmentField()
 {
 
   /** THE SEXTUPOLE **/
+ string line1;
+  nlohmann::json j; 
+  ifstream infile ("../parameters.txt"); 
+  string total="";
+  if (infile.is_open())
+    {
+      while ( getline (infile, line1))
+	{
+	  total+=line1;
+	  
+	}
+      infile.close();
+
+    }
+  else { G4cout << "Nah " << G4endl; }
+  
+  j = nlohmann::json::parse(total);
+  string magFile = j["MagnetFile"];
 
 
-   std::ifstream file("../six_map.table");
+   std::ifstream file(magFile);
   x_prec = 0.5;
   y_prec = 0.5;
   z_prec = 2.0;
@@ -42,7 +62,8 @@ AdjustmentField::AdjustmentField()
   //Since everything else is hard coded, hard code this too
   ofstream outfile;
   outfile.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
-  outfile << "The magnet file used is six_map.table " << endl;
+  outfile << "The magnet file used is " << endl;
+  outfile << magFile << endl;
   outfile.close();
  
 

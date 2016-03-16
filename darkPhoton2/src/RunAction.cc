@@ -34,8 +34,8 @@ RunAction::RunAction()
   analysisMan->SetVerboseLevel(1);
   
   analysisMan->CreateNtuple("Signal", "SignalTest");
-  analysisMan->CreateNtupleIColumn("PlaceHolder");
-  /*
+  //analysisMan->CreateNtupleIColumn("PlaceHolder");
+  
       for (G4int j = 0; j<1225; j++)
 	{
 	  std::stringstream ss2; 
@@ -45,30 +45,20 @@ RunAction::RunAction()
 	}
       //These next 3 columns are for testing code only
       analysisMan->CreateNtupleDColumn("EventTime");
-      analysisMan->CreateNtupleDColumn("EventEnergy");
       analysisMan->CreateNtupleIColumn("ID");
-      analysisMan->CreateNtupleIColumn("EventID");
 
-
-      analysisMan->CreateNtupleIColumn("hits");
-  */
       analysisMan->FinishNtuple(); 
 
       analysisMan->CreateNtuple("Check", "Check");
  
       analysisMan->CreateNtupleDColumn("Energy");
-      //analysisMan->CreateNtupleDColumn("Theta");
-      //analysisMan->CreateNtupleDColumn("Phi");
       analysisMan->CreateNtupleDColumn("Charge");
-      //analysisMan->CreateNtupleIColumn("EventID");
       analysisMan->CreateNtupleDColumn("StartPosX");
       analysisMan->CreateNtupleDColumn("StartPosY");
       analysisMan->CreateNtupleDColumn("StartPosZ");
       analysisMan->CreateNtupleDColumn("TarX");
       analysisMan->CreateNtupleDColumn("TarY");
       analysisMan->CreateNtupleDColumn("TarZ");
-      analysisMan->CreateNtupleDColumn("ParentEnergy");
-      //analysisMan->CreateNtupleIColumn("TrackID");
       analysisMan->FinishNtuple();
 
       analysisMan->CreateNtuple("True", "True");

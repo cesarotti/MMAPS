@@ -1,0 +1,12 @@
+{ 
+	"TargetMaterial":"G4_Be",
+	"DistanceToTargetm":10, 
+	"OmniThetaMindeg":2, 
+	"OmniThetaMaxdeg":5, 
+	"StagesInVacuumVessel":4,
+	"ThicknessOfVesselmm":2.1, 
+	"VacuumVesselMaterial":"G4_Al",
+	"MagnetFile":"../six_map.table",
+	"IncludeGeometry":false
+		
+}

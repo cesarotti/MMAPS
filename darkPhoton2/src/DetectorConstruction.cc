@@ -57,6 +57,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 using namespace std;
 vector<G4VPhysicalVolume*> physChambers(3);
@@ -73,6 +74,7 @@ G4double crysLength;
 G4double fChamThickness;
 G4double fThetaMin = 2*pi/180;
 G4double fThetaMax = 5*pi/180;
+G4bool geo = false;
 
 //G4double fThetaMin=0; //Minimum angle of omni detector 
 //G4double fThetaMax=12; //Max angle of omni detector
@@ -287,6 +289,28 @@ void DetectorConstruction::DefineMaterials()
   //Print Materials
   //G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 
+  string line;
+  nlohmann::json j; 
+  ifstream infile ("../parameters.txt"); 
+  string total="";
+
+  if (infile.is_open())
+    {
+      while ( getline (infile, line))
+	{
+	  total+=line;
+	  
+	}
+      infile.close();
+
+    }
+  else { G4cout << "Nah " << G4endl; }
+  
+  j = nlohmann::json::parse(total);
+  string material=j["VacuumVesselMaterial"];
+  fBeamLineMaterial = nistManager->FindOrBuildMaterial(material);
+  string materialTar=j["TargetMaterial"];
+  fTargetMaterial = nistManager->FindOrBuildMaterial(materialTar);
 
 }
 
@@ -322,10 +346,10 @@ targetPos = 0; //position of Z coordinate of target
   
   string line;
   nlohmann::json j; 
-  ifstream infile ("../darkPhoton2/src/test.txt"); 
+  ifstream infile ("../parameters.txt"); 
   string total="";
 
-  G4cout << "Starting reading" << G4endl;
+
   if (infile.is_open())
     {
       while ( getline (infile, line))
@@ -338,25 +362,27 @@ targetPos = 0; //position of Z coordinate of target
     }
   else { G4cout << "Nah " << G4endl; }
   
-  G4cout << total << G4endl;
-  
   j = nlohmann::json::parse(total);
 
-  G4cout << (G4double)j["test"] + (G4double)j["test2"] << G4endl;
-
-  //stringstream str = total;
-  //str >> j;
+  ///G4cout << (G4double)j["test"] + (G4double)j["test2"] << G4endl;
+  calorSpacing= (G4double)j["DistanceToTargetm"]*1.*m;
+  fNchambers=(G4int)j["StagesInVacuumVessel"]; 
+  fChamThickness=(G4double)j["ThicknessOfVesselmm"]*.001*m;
+  fThetaMin = (G4double)j["OmniThetaMindeg"]*pi/180;
+  fThetaMax = (G4double)j["OmniThetaMaxdeg"]*pi/180;
+  geo = (G4bool)j["IncludeGeometry"];
 
 
   ofstream file;
   file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
   file << "Geometry specs: \n" << endl;
   file << "Distance from target to calorimeter: " << calorSpacing/1000 << " m"  << endl;
-  file << "Target material: " << fTargetMaterial << endl;
+  file << "Target material: " << j["TargetMaterial"] << endl;
   file << "Target size: " << fTargetLength << endl;
   file << "Number of vacuum chambers in detector: " << fNchambers << endl;
   file << "Thickness of vacuum chamber: " << fChamThickness << endl;
-  file << "Material of vacuum chamber: " << fBeamLineMaterial << endl;
+  file << "Material of vacuum chamber: " << j["VacuumVesselMaterial"] << endl;
+  file << "Angular acceptance of detector: " << j["OmniThetaMindeg"] << " to " << j["OmniThetaMaxdeg"] << endl;
   file << "Full geometry on? : " << CLEObool << endl;
   file.close();
   
@@ -424,7 +450,10 @@ G4VPhysicalVolume* worldPV
 		      0, //copy number
 		      fCheckOverlaps); // true
 		   
-	      
+ G4int calorIndex =0;	
+
+ if (geo)
+   {      
 //!!!
 //Target
 
@@ -663,14 +692,14 @@ G4LogicalVolume * pipeVoidLV =
  
      
 		
- G4int calorIndex =0;
+ 
 
 
  //CLEO stuff
  if (CLEObool)
    {
  //Floor and Ceiling
-
+     /*
      
 	new G4PVPlacement(0, 
 	G4ThreeVector(0., wallH/2+ceilingW/2, 0.),
@@ -692,7 +721,7 @@ G4LogicalVolume * pipeVoidLV =
 		       0, 
 		       fCheckOverlaps);
      
-     
+     */
      
      //Modified vacuum chamber
      // Currently being modified such that a much more dynamic and parameterized model 
@@ -786,11 +815,11 @@ G4LogicalVolume * pipeVoidLV =
      
 
      //walls
-     
+     /*
      for(int w=0; w<3; w++)
        {
 	 new G4PVPlacement(0, 
-			   G4ThreeVector(-2.75*ft-1.*ft*w,0., targetPos+wallTotarget+4*ft*w), 
+			   G4ThreeVector(-5*ft-1.*ft*w,0., targetPos+wallTotarget+4*ft*w), 
 			   wallLV, 
 			   "wallBlock",
 			   worldLV, 
@@ -814,7 +843,7 @@ G4LogicalVolume * pipeVoidLV =
      for(int w=0; w<3; w++)
        {
        new G4PVPlacement(0, 
-			 G4ThreeVector(4*ft,0., targetPos+wallTotarget-2*ft-4*ft*w), 
+			 G4ThreeVector(6*ft,0., targetPos+wallTotarget-2*ft-4*ft*w), 
 			 wallLV, 
 			 "wallBlock",
 			 worldLV, 
@@ -825,7 +854,7 @@ G4LogicalVolume * pipeVoidLV =
  for(int w=0; w<4; w++)
    {
      new G4PVPlacement(0, 
-		       G4ThreeVector(4*ft-.75*ft*w,0., targetPos+wallTotarget-10*ft-4*ft*w), 
+		       G4ThreeVector(6*ft-.75*ft*w,0., targetPos+wallTotarget-10*ft-4*ft*w), 
 		       wallLV, 
 		       "wallBlock",
 			 worldLV, 
@@ -834,7 +863,7 @@ G4LogicalVolume * pipeVoidLV =
 			 fCheckOverlaps);
    }
  
- 
+     */
  
  //beamline
  
@@ -968,7 +997,7 @@ G4LogicalVolume * pipeVoidLV =
 calorIndex++;
 
  
- 
+   }
 
  //Omni detector
 
@@ -1007,8 +1036,9 @@ calorIndex++;
 
  //Visualization
 
- G4VisAttributes* color  = new G4VisAttributes(G4Colour(0.9, 0.7, 0.2));
 
+ G4VisAttributes* color  = new G4VisAttributes(G4Colour(0.9, 0.7, 0.2));
+ /*
  //worldLV->SetVisAttributes(new G4VisAttributes(G4Colour(1.0,1.0,1.0)));
  fLogicTarget->SetVisAttributes(color);
  beamlineLV->SetVisAttributes(new G4VisAttributes(G4Colour(0., 1., 0.)));
@@ -1032,7 +1062,7 @@ calorIndex++;
 
 
   color->SetVisibility(true);
-
+ */
  //Setting user Limits
 
  G4double maxStep = 1.0*cm;
@@ -1048,36 +1078,40 @@ void DetectorConstruction::ConstructSDandField()
 {
   //!!!
   //Create a sensitive detector and put it with logical volumes
-  G4SDManager* sdMan = G4SDManager::GetSDMpointer();
-  G4String SDname;
-
-    /*Add Adjustment Magnet Field*/
-    AdjustmentField* aField = new AdjustmentField;
-    G4FieldManager* fieldMgr
-            = G4TransportationManager::GetTransportationManager()->GetFieldManager();
-    fieldMgr->SetDetectorField(aField);
-    fieldMgr->CreateChordFinder(aField);
-
-    G4PropagatorInField* propMgr = G4TransportationManager::GetTransportationManager()->GetPropagatorInField();
-
-    //Largest acceptable Step is 1km by default
-    propMgr->SetLargestAcceptableStep( 10*cm);
-
-    SDname = "/calorimeterSD";
-  TestSD* calorimeterSD =
-    new TestSD(SDname, "TestHitsCollection");
-  sdMan->AddNewDetector(calorimeterSD);
-
-  SetSensitiveDetector("CrystalLV", calorimeterSD, true); //sets SD to all logical volumes with the name CrystalLV
-
-
-  SDname = "/omniSD";
-  OmniSD* omniSD = 
-    new OmniSD(SDname, "OmniHitsCollection");
-  sdMan->AddNewDetector(omniSD);
-  SetSensitiveDetector("OmniLV", omniSD, true);
   
- 
+  
+    G4SDManager* sdMan = G4SDManager::GetSDMpointer();
+    G4String SDname;
+  
+    if (geo)
+      {
+	/*Add Adjustment Magnet Field*/
+	AdjustmentField* aField = new AdjustmentField;
+	G4FieldManager* fieldMgr
+	  = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+	fieldMgr->SetDetectorField(aField);
+	fieldMgr->CreateChordFinder(aField);
+	
+	G4PropagatorInField* propMgr = G4TransportationManager::GetTransportationManager()->GetPropagatorInField();
+	
+	//Largest acceptable Step is 1km by default
+	propMgr->SetLargestAcceptableStep( 10*cm);
+	
+    SDname = "/calorimeterSD";
+    TestSD* calorimeterSD =
+      new TestSD(SDname, "TestHitsCollection");
+    sdMan->AddNewDetector(calorimeterSD);
+    
+    SetSensitiveDetector("CrystalLV", calorimeterSD, true); //sets SD to all logical volumes with the name CrystalLV
+      }
+    
+    SDname = "/omniSD";
+    OmniSD* omniSD = 
+      new OmniSD(SDname, "OmniHitsCollection");
+    sdMan->AddNewDetector(omniSD);
+    SetSensitiveDetector("OmniLV", omniSD, true);
+    
+    
 }
 
 
