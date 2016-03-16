@@ -109,8 +109,8 @@ void EventAction::EndOfEventAction(const G4Event* event)
     G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
   
   analysisMan->FillNtupleDColumn(0, 1225, 0.);
-  analysisMan->FillNtupleDColumn(0, 1226, eventID);
-  
+  analysisMan->FillNtupleDColumn(0, 1226, 1.);
+  analysisMan->AddNtupleRow(0);
   
   G4int hitNum =  omniHitColl->entries();
   G4cout << "Hit number: " << hitNum << G4endl;
@@ -146,6 +146,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
     }
 
 
-analysisMan->AddNtupleRow(0); // now root number of events matches Geant
+ // now root number of events matches Geant
   
 }

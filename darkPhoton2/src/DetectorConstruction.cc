@@ -46,6 +46,8 @@
 #include "G4PVParameterised.hh"
 #include "G4SubtractionSolid.hh"
 
+#include "json.hh"
+
 #include "AdjustmentField.hh"
 #include "G4FieldManager.hh"
 #include "G4TransportationManager.hh"
@@ -318,8 +320,34 @@ targetPos = 0; //position of Z coordinate of target
   fCapThickness = .6*mm;
   fChamThickness = .21*mm;
   
+  string line;
+  nlohmann::json j; 
+  ifstream infile ("../darkPhoton2/src/test.txt"); 
+  string total="";
 
+  G4cout << "Starting reading" << G4endl;
+  if (infile.is_open())
+    {
+      while ( getline (infile, line))
+	{
+	  total+=line;
+	  
+	}
+      infile.close();
+
+    }
+  else { G4cout << "Nah " << G4endl; }
   
+  G4cout << total << G4endl;
+  
+  j = nlohmann::json::parse(total);
+
+  G4cout << (G4double)j["test"] + (G4double)j["test2"] << G4endl;
+
+  //stringstream str = total;
+  //str >> j;
+
+
   ofstream file;
   file.open("../darkPhotonBuild2/output.txt", std::ofstream::app);
   file << "Geometry specs: \n" << endl;
