@@ -112,7 +112,7 @@ DetectorConstruction::DetectorConstruction()
   fMessenger = new DetectorMessenger(this);
   fLogicCalor = new G4LogicalVolume*[1225];
   fPhysCalor = new G4VPhysicalVolume*[1225];
-  fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[4];
+  fVolumesShiftedByCalorDist = new G4VPhysicalVolume*[10];
   CLEObool =true;
 }
 
@@ -439,7 +439,7 @@ G4Box* targetS =
    new G4LogicalVolume(targetS, fTargetMaterial, "Target", 0,0,0);
  
  
-
+ 
  new G4PVPlacement(0, // no rotation
 		   positionTarget, // at (x,y,z)
 		   fLogicTarget, // logical volume
@@ -454,7 +454,7 @@ G4Box* targetS =
 
  G4cout << "Target is " << fTargetLength/cm << " cm of " <<
    fTargetMaterial->GetName() << G4endl;
-
+ 
  
 
  //!!!
@@ -507,7 +507,7 @@ G4VSolid* boxS =
 			   false, 
 			   i, 
 			   fCheckOverlaps);
-	 	
+	 
      }			  
    }
 
@@ -876,6 +876,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
  calorIndex++;
+ 
 
  fVolumesShiftedByCalorDist[calorIndex] =
    new G4PVPlacement(0, G4ThreeVector(0., 0., fCalorDist+crystalLength/2+1.38*ft), 
@@ -937,7 +938,7 @@ G4LogicalVolume * pipeVoidLV =
 				0.*deg, 360.*deg);
  G4LogicalVolume* liningILV = new G4LogicalVolume(liningI, fLiningMaterial, 
 						  "LiningILV");
- /*
+ 
  fVolumesShiftedByCalorDist[calorIndex] = new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0., fCalorDist+crystalLength/2), 
 		   liningILV, 
@@ -948,7 +949,7 @@ G4LogicalVolume * pipeVoidLV =
 		   fCheckOverlaps);
 
 		   calorIndex++;
- */
+ 
  
  G4VSolid* liningO = new G4Tubs("liningO", 90.2*cm, 90.7*cm, crystalLength/2, 
 				0.*deg, 360.*deg);
@@ -979,7 +980,7 @@ calorIndex++;
 
      G4LogicalVolume* omniLV = 
        new G4LogicalVolume(omni, fVacuumMaterial, "OmniLV");
-    
+       
       fVolumesShiftedByCalorDist[calorIndex] =new G4PVPlacement(0, 
 		   G4ThreeVector(0., 0.,fCalorDist-.5*mm), 
 		   omniLV, 
@@ -1000,7 +1001,7 @@ calorIndex++;
 
 
 
-   
+
  
 
 
@@ -1030,7 +1031,7 @@ calorIndex++;
 
 
 
- color->SetVisibility(true);
+  color->SetVisibility(true);
 
  //Setting user Limits
 

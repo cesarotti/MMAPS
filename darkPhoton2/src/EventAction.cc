@@ -98,7 +98,7 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	      eDep = hit->GetEnergyDep();
 	      if (eDep > 0)
 		{
-		  analysisMan->FillNtupleDColumn(0, i, eDep);
+		  //analysisMan->FillNtupleDColumn(0, i, eDep);
 		  totalEnergy+=eDep;
 		  hits = true;
 		}
@@ -107,10 +107,12 @@ void EventAction::EndOfEventAction(const G4Event* event)
   G4double energy(0.);
   int eventID = 
     G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
-  
+  /*
   analysisMan->FillNtupleDColumn(0, 1225, 0.);
-  analysisMan->FillNtupleDColumn(0, 1226, 1.);
-  analysisMan->AddNtupleRow(0);
+  analysisMan->FillNtupleDColumn(0, 1226, 100.);
+  analysisMan->FillNtupleIColumn(0, 1227, 1);
+  analysisMan->FillNtupleIColumn(0, 1228, eventID);
+  */
   
   G4int hitNum =  omniHitColl->entries();
   G4cout << "Hit number: " << hitNum << G4endl;
@@ -145,7 +147,9 @@ void EventAction::EndOfEventAction(const G4Event* event)
 	    //}
     }
 
-
- // now root number of events matches Geant
-  
+ 
+  /*
+if (hits) {analysisMan->FillNtupleIColumn(0, 1228, 1);}
+analysisMan->AddNtupleRow(0); // now root number of events matches Geant
+  */
 }
