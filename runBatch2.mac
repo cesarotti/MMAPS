@@ -24,11 +24,14 @@
 # MadGraph Background
 # Udpate the file after bgds, and make sure directory matches
 # where MadGraph files are actually stored
+# 
+# UPDATED 3 / 29/ 16
 
 /generator/select hepmcAscii
-/generator/hepmcAscii/open /nfs/cms/mc1/cjc359/MMAPS/bgds/bhabha_60k.hepmc
+/generator/hepmcAscii/open /nfs/cms/mc1/LARGE_DATA/e+e-2e+e-y_three_mil.hepmc
 
 
 # Running the simulation
+# Choose the number of runs.
 
 /run/beamOn 200

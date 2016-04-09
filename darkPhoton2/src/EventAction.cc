@@ -104,7 +104,6 @@ void EventAction::EndOfEventAction(const G4Event* event)
   int eventID = 
     G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
   analysisMan->FillNtupleDColumn(0, 1225, 0.);
-  analysisMan->FillNtupleDColumn(0, 1226, eventID);
   analysisMan->AddNtupleRow(0);
   
   G4int hitNum =  omniHitColl->entries();
