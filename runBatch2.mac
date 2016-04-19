@@ -34,4 +34,4 @@
 # Running the simulation
 # Choose the number of runs.
 
-/run/beamOn 200
+/run/beamOn 1000000
