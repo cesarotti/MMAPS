@@ -27,7 +27,7 @@ date +%Y:%m:%d#%H:%M:%S >> output.txt
 
 
 
-./darkPhoton /nfs/cms/mc1/cjc359/MMAPS_Sim/runBatch2.mac
+./darkPhoton /nfs/cms/mc1/cjc359/MMAPS_Sim/runBatch.mac
 
 
 mkdir ../$currentfolder
@@ -39,4 +39,5 @@ hadd complete.root *.root
 mkdir threadfiles
 mv *.root threadfiles
 cd threadfiles
-mv complete.root ../
+mv complete.root 3mmSTEEL3cham.root
+mv 3mmSTEEL3cham.root ../

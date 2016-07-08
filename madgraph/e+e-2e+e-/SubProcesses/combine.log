@@ -1,0 +1,15 @@
+ No PDF is used, alpha_s(MZ) from param_card is used
+ Value of alpha_s from param_card:   0.11800000071525575     
+ The default order of alpha_s running is fixed to            2
+ Results.dat xsec =    30290000000.000000       abs xsec =    30290000000.000000     
+ Found            1  subprocesses
+ SubProcess/Channel     kept   read   xsec 
+P0_epem_epem/G1/     390     390 0.162E+08
+P0_epem_epem/G2.2/     390     789 0.162E+08
+P0_epem_epem/G3.2/     390    1182 0.162E+08
+P0_epem_epem/G4/  666671  667463 0.303E+11
+P0_epem_epem/G5/  666671  667846 0.303E+11
+P0_epem_epem/G6/  666671  668221 0.303E+11
+ Found       515024  events writing first       500000
+ Unweighting selected       500000  events.
+Truncated  0.00% of cross section

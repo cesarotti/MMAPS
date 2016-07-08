@@ -1,0 +1,250 @@
+
+<head>
+    <title>Process results</title>
+    <script type="text/javascript" src="../sortable.js"></script>
+    <link rel=stylesheet href="../mgstyle.css" type="text/css">
+</head>
+<body>
+<script type="text/javascript">
+function UrlExists(url) {
+  var http = new XMLHttpRequest();
+  http.open('HEAD', url, false);
+  try{
+     http.send()
+     }
+  catch(err){
+   return 1==2;
+  }
+  return http.status!=404;
+}
+function check_link(url,alt, id){
+    var obj = document.getElementById(id);
+    if ( ! UrlExists(url)){
+        if ( ! UrlExists(alt)){
+         obj.href = alt;
+         return true;
+        }
+       obj.href = alt;
+       return false;
+    }
+    obj.href = url;
+    return 1==1;
+}
+</script>
+  
+
+ <BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>s= 8.2067e+09 &#177 7.17e+06 (pb)</b><br><br>
+<table class="sortable" id='tablesort'>
+<tr><th>Graph</th>
+    <th> Cross-Section</th>
+    <th>Error</th>
+    <th>Events (K)</th>
+    <th>Unwgt</th>
+    <th>Luminosity</th>
+</tr>
+
+<tr><td align=right><a href=../../SubProcesses/P0_epem_aepem/diagrams.html>P0_epem_aepem</a></td>
+    <td align=right><a id="#P0_epem_aepem" href=#P0_epem_aepem onClick="check_link('#P0_epem_aepem','#P0_epem_aepem','#P0_epem_aepem')"> 8.207e+09 </a> </td>
+    <td align=right>  7.17e+06</td>
+    <td align=right>  3543113.0</td>
+    <td align=right>  233345.0</td>
+    <td align=right>  0</td>
+</tr>
+
+<tr><td align=right>P0 sum</td>
+    <td align=right><a id="./results.html" href=./results.html onClick="check_link('./results.html','','./results.html')"> 8206725600.0 </a> </td>
+    <td align=right>  </td>
+    <td align=right>  </td>
+    <td align=right>  </td>
+    <td align=right>  </td>
+</tr>
+
+</table>
+</center>
+<br><br><br>
+ <dl>  
+<dt><a  name=P0_epem_aepem href=../../SubProcesses/P0_epem_aepem/diagrams.html>P0_epem_aepem</a></dt><dd>
+ <BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>s= 8.2067e+09 &#177 7.17e+06 (pb)</b><br><br>
+<table class="sortable" id='tablesort'>
+<tr><th>Graph</th>
+    <th> Cross-Section</th>
+    <th>Error</th>
+    <th>Events (K)</th>
+    <th>Unwgt</th>
+    <th>Luminosity</th>
+</tr>
+
+<tr><td align=right>G1</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G1/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G1/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G1/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G1/log.txt','../../SubProcesses/P0_epem_aepem/G1/run_07_log.txt')"> 2.677e+06 </a> </td>
+    <td align=right>  1.1e+05</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  48.0</td>
+    <td align=right>  1.79e-05</td>
+</tr>
+
+<tr><td align=right>G2.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G2.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G2.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G2.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G2.2/log.txt','../../SubProcesses/P0_epem_aepem/G2.2/run_07_log.txt')"> 2.893e-28 </a> </td>
+    <td align=right>  1.34e-29</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  31.0</td>
+    <td align=right>  1.07e+29</td>
+</tr>
+
+<tr><td align=right>G3.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G3.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G3.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G3.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G3.2/log.txt','../../SubProcesses/P0_epem_aepem/G3.2/run_07_log.txt')"> 1.182e-07 </a> </td>
+    <td align=right>  6.52e-09</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  24.0</td>
+    <td align=right>  2.03e+08</td>
+</tr>
+
+<tr><td align=right>G7</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G7/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G7/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G7/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G7/log.txt','../../SubProcesses/P0_epem_aepem/G7/run_07_log.txt')"> 1.725e+09 </a> </td>
+    <td align=right>  2.72e+06</td>
+    <td align=right>  748026.0</td>
+    <td align=right>  50725.0</td>
+    <td align=right>  2.94e-05</td>
+</tr>
+
+<tr><td align=right>G8</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G8/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G8/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G8/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G8/log.txt','../../SubProcesses/P0_epem_aepem/G8/run_07_log.txt')"> 3.622e-29 </a> </td>
+    <td align=right>  1e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  196.0</td>
+    <td align=right>  5.41e+30</td>
+</tr>
+
+<tr><td align=right>G9</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G9/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G9/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G9/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G9/log.txt','../../SubProcesses/P0_epem_aepem/G9/run_07_log.txt')"> 5.472e-08 </a> </td>
+    <td align=right>  1.26e-09</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  115.0</td>
+    <td align=right>  2.1e+09</td>
+</tr>
+
+<tr><td align=right>G10</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G10/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G10/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G10/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G10/log.txt','../../SubProcesses/P0_epem_aepem/G10/run_07_log.txt')"> 2.394e+06 </a> </td>
+    <td align=right>  3.77e+04</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  463.0</td>
+    <td align=right>  0.000193</td>
+</tr>
+
+<tr><td align=right>G11.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G11.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G11.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G11.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G11.2/log.txt','../../SubProcesses/P0_epem_aepem/G11.2/run_07_log.txt')"> 8.051e-29 </a> </td>
+    <td align=right>  8.19e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  387.0</td>
+    <td align=right>  4.81e+30</td>
+</tr>
+
+<tr><td align=right>G12.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G12.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G12.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G12.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G12.2/log.txt','../../SubProcesses/P0_epem_aepem/G12.2/run_07_log.txt')"> 3.025e-08 </a> </td>
+    <td align=right>  5.87e-10</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  427.0</td>
+    <td align=right>  1.41e+10</td>
+</tr>
+
+<tr><td align=right>G13</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G13/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G13/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G13/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G13/log.txt','../../SubProcesses/P0_epem_aepem/G13/run_07_log.txt')"> 1.637e+09 </a> </td>
+    <td align=right>  2.82e+06</td>
+    <td align=right>  1116018.0</td>
+    <td align=right>  71696.0</td>
+    <td align=right>  4.38e-05</td>
+</tr>
+
+<tr><td align=right>G14</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G14/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G14/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G14/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G14/log.txt','../../SubProcesses/P0_epem_aepem/G14/run_07_log.txt')"> 3.308e-29 </a> </td>
+    <td align=right>  2.41e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  24.0</td>
+    <td align=right>  7.25e+29</td>
+</tr>
+
+<tr><td align=right>G15</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G15/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G15/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G15/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G15/log.txt','../../SubProcesses/P0_epem_aepem/G15/run_07_log.txt')"> 5.338e-08 </a> </td>
+    <td align=right>  2.81e-09</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  293.0</td>
+    <td align=right>  5.49e+09</td>
+</tr>
+
+<tr><td align=right>G16</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G16/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G16/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G16/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G16/log.txt','../../SubProcesses/P0_epem_aepem/G16/run_07_log.txt')"> 2.418e+09 </a> </td>
+    <td align=right>  4.42e+06</td>
+    <td align=right>  780026.0</td>
+    <td align=right>  53709.0</td>
+    <td align=right>  2.22e-05</td>
+</tr>
+
+<tr><td align=right>G17</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G17/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G17/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G17/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G17/log.txt','../../SubProcesses/P0_epem_aepem/G17/run_07_log.txt')"> 5.613e-29 </a> </td>
+    <td align=right>  2.28e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  67.0</td>
+    <td align=right>  1.19e+30</td>
+</tr>
+
+<tr><td align=right>G18</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G18/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G18/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G18/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G18/log.txt','../../SubProcesses/P0_epem_aepem/G18/run_07_log.txt')"> 1.112e-07 </a> </td>
+    <td align=right>  3.86e-09</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  130.0</td>
+    <td align=right>  1.17e+09</td>
+</tr>
+
+<tr><td align=right>G19</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G19/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G19/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G19/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G19/log.txt','../../SubProcesses/P0_epem_aepem/G19/run_07_log.txt')"> 2.355e+06 </a> </td>
+    <td align=right>  7.14e+04</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  449.0</td>
+    <td align=right>  0.000191</td>
+</tr>
+
+<tr><td align=right>G20.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G20.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G20.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G20.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G20.2/log.txt','../../SubProcesses/P0_epem_aepem/G20.2/run_07_log.txt')"> 8.086e-29 </a> </td>
+    <td align=right>  1.5e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  409.0</td>
+    <td align=right>  5.06e+30</td>
+</tr>
+
+<tr><td align=right>G21.2</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G21.2/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G21.2/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G21.2/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G21.2/log.txt','../../SubProcesses/P0_epem_aepem/G21.2/run_07_log.txt')"> 3.077e-08 </a> </td>
+    <td align=right>  6.14e-10</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  442.0</td>
+    <td align=right>  1.44e+10</td>
+</tr>
+
+<tr><td align=right>G22</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G22/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G22/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G22/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G22/log.txt','../../SubProcesses/P0_epem_aepem/G22/run_07_log.txt')"> 2.42e+09 </a> </td>
+    <td align=right>  4.06e+06</td>
+    <td align=right>  780026.0</td>
+    <td align=right>  53583.0</td>
+    <td align=right>  2.21e-05</td>
+</tr>
+
+<tr><td align=right>G23</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G23/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G23/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G23/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G23/log.txt','../../SubProcesses/P0_epem_aepem/G23/run_07_log.txt')"> 5.728e-29 </a> </td>
+    <td align=right>  2.4e-30</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  96.0</td>
+    <td align=right>  1.68e+30</td>
+</tr>
+
+<tr><td align=right>G24</td>
+    <td align=right><a id="../../SubProcesses/P0_epem_aepem/G24/run_07_log.txt" href=../../SubProcesses/P0_epem_aepem/G24/run_07_log.txt onClick="check_link('../../SubProcesses/P0_epem_aepem/G24/run_07_log.txt','../../SubProcesses/P0_epem_aepem/G24/log.txt','../../SubProcesses/P0_epem_aepem/G24/run_07_log.txt')"> 1.146e-07 </a> </td>
+    <td align=right>  4.88e-09</td>
+    <td align=right>  7001.0</td>
+    <td align=right>  31.0</td>
+    <td align=right>  2.71e+08</td>
+</tr>
+
+</table>
+</center>
+<br><br><br>
+ </dl></body>

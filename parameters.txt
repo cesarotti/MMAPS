@@ -4,7 +4,8 @@
 	"OmniThetaMindeg":2, 
 	"OmniThetaMaxdeg":5, 
 	"StagesInVacuumVessel":3,
-	"ThicknessOfVesselmm":3.0, 
+	"ThicknessOfVesselmm":3.0,
+	"CapMaterial":"G4_Al", 
 	"VacuumVesselMaterial":"G4_STAINLESS-STEEL",
 	"MagnetFile":"../six_map.table",
 	"IncludeGeometry":true

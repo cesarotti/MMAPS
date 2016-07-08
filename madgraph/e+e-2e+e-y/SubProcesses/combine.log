@@ -1,0 +1,30 @@
+ No PDF is used, alpha_s(MZ) from param_card is used
+ Value of alpha_s from param_card:   0.11800000071525575     
+ The default order of alpha_s running is fixed to            2
+ Results.dat xsec =    8216000000.0000000       abs xsec =    8216000000.0000000     
+ Found            1  subprocesses
+ SubProcess/Channel     kept   read   xsec 
+P0_epem_aepem/G1/     483     483 0.259E+07
+P0_epem_aepem/G2.2/     483     522 0.259E+07
+P0_epem_aepem/G3.2/     483     633 0.259E+07
+P0_epem_aepem/G7/  453382  453532 0.173E+10
+P0_epem_aepem/G8/  453382  453843 0.173E+10
+P0_epem_aepem/G9/  453382  454114 0.173E+10
+P0_epem_aepem/G10/  453813  454545 0.174E+10
+P0_epem_aepem/G11.2/  453813  454992 0.174E+10
+P0_epem_aepem/G12.2/  453813  455467 0.174E+10
+P0_epem_aepem/G13/  877445  879099 0.338E+10
+P0_epem_aepem/G14/  877445  879270 0.338E+10
+P0_epem_aepem/G15/  877445  879558 0.338E+10
+P0_epem_aepem/G16/ 1357567 1359680 0.579E+10
+P0_epem_aepem/G17/ 1357567 1359760 0.579E+10
+P0_epem_aepem/G18/ 1357567 1359837 0.579E+10
+P0_epem_aepem/G19/ 1358322 1360592 0.580E+10
+P0_epem_aepem/G20.2/ 1358322 1361008 0.580E+10
+P0_epem_aepem/G21.2/ 1358322 1361395 0.580E+10
+P0_epem_aepem/G22/ 1837224 1840297 0.822E+10
+P0_epem_aepem/G23/ 1837224 1840377 0.822E+10
+P0_epem_aepem/G24/ 1837224 1840484 0.822E+10
+ Found      1029708  events writing first      1000000
+ Unweighting selected      1000000  events.
+Truncated  0.00% of cross section

@@ -16,6 +16,7 @@
 #include <fstream>
 #include <vector>
 
+class G4Tubs;
 class G4VPhysicalVolume;
 class G4LogicalVolume;
 class G4Material;
@@ -62,26 +63,58 @@ private:
   //methods
   void DefineMaterials(); //defines materials for elements of the detector
   G4VPhysicalVolume* DefineVolumes(); //defines geometry
-  
+
+  //Target Members
+  G4LogicalVolume* fLogicTarget; //pointer to logical target
+  G4Material* fTargetMaterial; // pointer to target material    
+  G4double fTargetLength;
+  G4double fTargetFace;
+  G4double fTargetPos;
+
+  //Magnet Members
+  G4double fMagnetLength; 
+  G4double fTarToMagDist;
+  G4double fMagnetFace;
+
+
+  //Calorimeter Members
+  G4double fCrystalLength;
+  G4double fCalorSpacing;
+  G4double fCrystalFace;
+  G4double fCalTol;
+
+
+  //Omni Detector 
+  G4double fThetaMin; 
+  G4double fThetaMax;
+
+  //Vacuum chamber members
+  G4double fChamThickness;
+
 
   //data members
+  G4Tubs** fSolidCham; //Pointer to solids of chamber
+  G4Tubs** fSolidCaps; //Pointer to caps on chamber
 
   G4LogicalVolume** fLogicCalor; //pointer to calorimeter
-  G4LogicalVolume* fLogicTarget; //pointer to logical target
+  G4LogicalVolume** fLogicCham;
+  G4LogicalVolume** fLogicCaps;
   
   //for setCalorPos command
   G4VPhysicalVolume** fPhysCalor; //pointer to calorimeter physical volumes
+  G4VPhysicalVolume** fPhysCham; //pointer to physical volumes of chambers
+  G4VPhysicalVolume** fPhysCaps;
+
   G4VPhysicalVolume** fVolumesShiftedByCalorDist; //duh
   G4double fCalorDist; //distance from middle of target to center of crystal
   G4int fNchambers; // Number of chambers in vacuum vessel
   G4double fCapThickness; //thickness of caps in vacuum vessel
   G4LogicalVolume* worldLV; //the world logical vol
  
-
-  G4Material* fTargetMaterial; // pointer to target material
   G4Material* fCalorMaterial; // pointer to calorimeter material
   G4Material* fWallMaterial; // wall material
   G4Material* fBeamDumpMaterial; //beam dump material
+  G4Material* fCapMaterial;
   G4Material* fCLEOMaterial; // pointer to CLEO 'stuff'
   G4Material* fWorldMaterial; // pointer to world material
   G4Material* fSpaceMaterial; //Variable to determine
@@ -92,8 +125,7 @@ private:
   G4Material* fMagnetMaterial; 
 
 
-  G4double fTargetLength;
-
+ 
   G4UserLimits* fStepLimit; // pointer to user step limits
 
   DetectorMessenger* fMessenger; // messenger

@@ -77,13 +77,13 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
   }   
 
   if( command == fCalPosCmd ) {
-    fDetectorConstruction
-           ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
+    // fDetectorConstruction
+    //     ->SetCalorDist(fCalPosCmd->GetNewDoubleValue(newValue)); 
   }
 
   if( command == fChamNumCmd ) {
-    fDetectorConstruction
-      ->SetChamberNumber(fChamNumCmd->GetNewIntValue(newValue));
+    //fDetectorConstruction
+    // ->SetChamberNumber(fChamNumCmd->GetNewIntValue(newValue));
   }
 
   
